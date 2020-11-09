@@ -26,7 +26,7 @@ class CameraManager(
     private val autoFocusIntervalSec: Long = 1
 ) {
 
-    companion object{
+    companion object {
         const val TAG = "CameraManager"
     }
 
@@ -77,10 +77,11 @@ class CameraManager(
         }, ContextCompat.getMainExecutor(activity))
     }
 
-    private fun autoFocus(camera: Camera){
+    private fun autoFocus(camera: Camera) {
         cameraView.afterMeasured {
             val factory: MeteringPointFactory = SurfaceOrientedMeteringPointFactory(
-                cameraView.width.toFloat(), cameraView.height.toFloat())
+                cameraView.width.toFloat(), cameraView.height.toFloat()
+            )
             val centerWidth = cameraView.width.toFloat() / 2
             val centerHeight = cameraView.height.toFloat() / 2
             //create a point on the center of the view
@@ -102,7 +103,7 @@ class CameraManager(
     }
 
 
-    private fun focusOnTouch(camera: Camera){
+    private fun focusOnTouch(camera: Camera) {
         cameraView.afterMeasured {
             cameraView.setOnTouchListener { _, event ->
                 return@setOnTouchListener when (event.action) {
