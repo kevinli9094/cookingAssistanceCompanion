@@ -13,7 +13,9 @@ class TAndTTextAnalyzer(overlay: CameraOverlay): BaseTextAnalyzer(overlay) {
         const val TAG = "TAndTTextAnalyzer"
     }
 
-    private val filterRegex = Regex("^([0-9$]|[wWuU] ?[\$sS]).*")
+    private val filterPriceRegex = Regex("^(\$|[0-9$]|[wWvVuU] ?[\$sS]| ?[\$sS] ?[0-9]).*")
+    private val filterTitleRegex = Regex("^(pr[0o]duce|[mn]eat|gr[0o]cery|deli)$", RegexOption.IGNORE_CASE)
+    private val filterErrorRegex = Regex("^([a-z]|zh|\\(a|w\\\\)$", RegexOption.IGNORE_CASE)
 
     override fun processText(visionText: Text, imageInfo: ImageBaseInfo) {
         val drawInfos = mutableListOf<DrawInfo>()
@@ -24,7 +26,7 @@ class TAndTTextAnalyzer(overlay: CameraOverlay): BaseTextAnalyzer(overlay) {
                     val boundingBox = line.boundingBox
                     if(boundingBox != null){
                         drawInfos.add(DrawInfo(boundingBox.toRectF(), text))
-                        ScanningResult.incrementKey(text)
+                        ScanningResult.incrementKey(convertString(text))
                     }
                 }
             }
@@ -40,6 +42,19 @@ class TAndTTextAnalyzer(overlay: CameraOverlay): BaseTextAnalyzer(overlay) {
      */
     @VisibleForTesting
     fun filteredString(text: String):Boolean{
-        return filterRegex.matches(text)
+        return filterPriceRegex.matches(text)
+                || filterTitleRegex.matches(text)
+                || filterErrorRegex.matches(text)
+    }
+
+    private val onSaleRegex = Regex("\\(.*\\)")
+    private val zeroRegex = Regex("0")
+    @VisibleForTesting
+    fun convertString(text: String):String{
+
+        var temp = onSaleRegex.replace(text,"")
+            .trim()
+        temp = zeroRegex.replace(temp, "O")
+        return temp
     }
 }

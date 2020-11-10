@@ -1,5 +1,6 @@
 package com.kevin.cookingassistancecompanion.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kevin.cookingassistancecompanion.ScanningResult
@@ -21,7 +22,7 @@ class ResultActivityViewModel : ViewModel() {
      * remove item from result list
      */
     fun remove(index: Int) {
-        // todo
+
     }
 
     fun discardRest() {
@@ -46,6 +47,7 @@ class ResultActivityViewModel : ViewModel() {
      */
     private fun toViewModels(): List<ResultItemViewModel> {
         val result = ScanningResult.getSortedResult()
+        Log.e("kl:", result.toString())
         return result.map {
             ResultItemViewModel(it)
         }
