@@ -1,5 +1,6 @@
 package com.kevin.cookingassistancecompanion.textAnalyzer
 
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.core.graphics.toRectF
 import com.google.mlkit.vision.text.Text
@@ -25,8 +26,10 @@ class TAndTTextAnalyzer(overlay: CameraOverlay): BaseTextAnalyzer(overlay) {
                 if(!filteredString(text)){
                     val boundingBox = line.boundingBox
                     if(boundingBox != null){
+                        val convertedString = convertString(text)
                         drawInfos.add(DrawInfo(boundingBox.toRectF(), text))
-                        ScanningResult.incrementKey(convertString(text))
+                        Log.i(TAG, convertedString)
+                        ScanningResult.incrementKey(convertedString)
                     }
                 }
             }

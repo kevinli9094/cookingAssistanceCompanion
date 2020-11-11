@@ -63,4 +63,6 @@ dependencies {
     // Saved state module for ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
 
+    implementation "com.intuit.fuzzymatcher:fuzzy-matcher:1.0.4"
+
 }
