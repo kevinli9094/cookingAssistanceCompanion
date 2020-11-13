@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.view.PreviewView
@@ -11,14 +12,20 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.kevin.cookingassistancecompanion.CameraManager
 import com.kevin.cookingassistancecompanion.CameraOverlay
+import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
 import com.kevin.cookingassistancecompanion.databinding.ActivityScanBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
 
 
 class ScanActivity : AppCompatActivity() {
 
     companion object {
-        private const val TAG = "MainActivity"
-        private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
+        private const val TAG = "ScanActivity"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
@@ -78,5 +85,41 @@ class ScanActivity : AppCompatActivity() {
         ContextCompat.checkSelfPermission(
             baseContext, it
         ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    /**
+     * Use this to load asset file to database
+     */
+    private fun loadAssetToDatabase() {
+        var reader: BufferedReader? = null
+        val mutableSet = mutableSetOf<String>()
+        try {
+            reader = BufferedReader(
+                InputStreamReader(assets.open("items.txt"))
+            )
+
+            // do reading, usually loop until end of file reading
+            var mLine = reader.readLine()
+            while (mLine != null) {
+                Log.i(TAG, mLine)
+                mutableSet.add(mLine)
+                mLine = reader.readLine()
+            }
+        } catch (e: IOException) {
+            Log.e(TAG, e.stackTraceToString())
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (e: IOException) {
+                    Log.e(TAG, e.stackTraceToString())
+                }
+            }
+        }
+
+        val datastore = RealmItemNamesDatastore()
+        GlobalScope.launch(Dispatchers.IO) {
+            datastore.insertTAndTItemNames(mutableSet.toList())
+        }
     }
 }
