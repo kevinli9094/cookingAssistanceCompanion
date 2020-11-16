@@ -53,6 +53,8 @@ class ScanActivity : AppCompatActivity() {
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
             )
         }
+
+        loadAssetToDatabase()
     }
 
     override fun onRequestPermissionsResult(
@@ -91,34 +93,38 @@ class ScanActivity : AppCompatActivity() {
      * Use this to load asset file to database
      */
     private fun loadAssetToDatabase() {
-        var reader: BufferedReader? = null
-        val mutableSet = mutableSetOf<String>()
-        try {
-            reader = BufferedReader(
-                InputStreamReader(assets.open("items.txt"))
-            )
+        val datastore = RealmItemNamesDatastore()
 
-            // do reading, usually loop until end of file reading
-            var mLine = reader.readLine()
-            while (mLine != null) {
-                Log.i(TAG, mLine)
-                mutableSet.add(mLine)
-                mLine = reader.readLine()
+        GlobalScope.launch(Dispatchers.IO) {
+            if(datastore.getTAndTItemNames().isEmpty()){
+                return@launch
             }
-        } catch (e: IOException) {
-            Log.e(TAG, e.stackTraceToString())
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (e: IOException) {
-                    Log.e(TAG, e.stackTraceToString())
+            var reader: BufferedReader? = null
+            val mutableSet = mutableSetOf<String>()
+            try {
+                reader = BufferedReader(
+                    InputStreamReader(assets.open("items.txt"))
+                )
+
+                // do reading, usually loop until end of file reading
+                var mLine = reader.readLine()
+                while (mLine != null) {
+                    Log.i(TAG, mLine)
+                    mutableSet.add(mLine)
+                    mLine = reader.readLine()
+                }
+            } catch (e: IOException) {
+                Log.e(TAG, e.stackTraceToString())
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (e: IOException) {
+                        Log.e(TAG, e.stackTraceToString())
+                    }
                 }
             }
-        }
 
-        val datastore = RealmItemNamesDatastore()
-        GlobalScope.launch(Dispatchers.IO) {
             datastore.insertTAndTItemNames(mutableSet.toList())
         }
     }
