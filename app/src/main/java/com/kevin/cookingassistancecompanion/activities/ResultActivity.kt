@@ -27,7 +27,7 @@ class ResultActivity : AppCompatActivity() {
         val adapter = ResultAdapter(viewModel)
         binding.recyclerView.adapter = adapter
 
-        viewModel.data.observe(this, {
+        viewModel.getData().observe(this, {
             adapter.setData(it)
         })
     }
