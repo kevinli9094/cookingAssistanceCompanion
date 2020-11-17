@@ -26,7 +26,7 @@ class TAndTTextAnalyzer(overlay: CameraOverlay): BaseTextAnalyzer(overlay) {
                     val boundingBox = line.boundingBox
                     if(boundingBox != null){
                         drawInfos.add(DrawInfo(boundingBox.toRectF(), text))
-                        ScanningResult.incrementKey(convertString(text))
+                        ScanningResult.addString(convertString(text))
                     }
                 }
             }

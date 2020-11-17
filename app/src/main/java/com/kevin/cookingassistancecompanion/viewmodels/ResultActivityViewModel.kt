@@ -12,6 +12,7 @@ import com.intuit.fuzzymatcher.domain.ElementType
 import com.intuit.fuzzymatcher.domain.MatchType
 import com.kevin.cookingassistancecompanion.ScanningResult
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
+import kotlin.math.max
 
 class ResultActivityViewModel : ViewModel() {
     companion object{
@@ -22,13 +23,14 @@ class ResultActivityViewModel : ViewModel() {
         MutableLiveData(emptyList())
     }
 
+    private val mutableDataList = mutableListOf<ResultItemViewModel>()
+
     private val mutableIsLoading: MutableLiveData<Boolean> = MutableLiveData(true)
 
     init {
         processData()
     }
     private fun processData(){
-        Log.i(TAG, "start time")
         val outputResult = ScanningResult.getSortedResult()
         val documentList: List<Document> =
             outputResult.mapIndexed { index, value ->
@@ -67,13 +69,14 @@ class ResultActivityViewModel : ViewModel() {
         val matchService = MatchService()
         val result = matchService.applyMatch(existingDoc, documentList)
 
-        val viewModels: List<ResultItemViewModel> = result.map {
-            ResultItemViewModel(it.key.elements.first().value as String)
+        val viewModelScanneds: List<ScannedResultItemViewModel> = result.map {
+            ScannedResultItemViewModel(it.key.elements.first().value as String)
         }
 
-        mutableData.value = viewModels
+        mutableDataList.addAll(viewModelScanneds)
+        mutableDataList.add(ButtonResultItemViewModel("Add"))
+        mutableData.value = mutableDataList
         mutableIsLoading.value = false
-        Log.i(TAG, "end time")
     }
 
     fun getData(): LiveData<List<ResultItemViewModel>> {
@@ -95,15 +98,18 @@ class ResultActivityViewModel : ViewModel() {
      * remove item from result list
      */
     fun remove(index: Int) {
-
+        mutableDataList[index].destroyLifecycle()
+        mutableDataList.removeAt(index)
+        mutableData.value = mutableDataList
     }
 
-    fun discardRest() {
-
+    fun addEditableItem(){
+        mutableDataList.add(max(mutableDataList.size -1, 0), ScannedResultItemViewModel("", editable = true))
+        mutableData.value = mutableDataList
     }
 
-    fun saveRest() {
-
+    fun save() {
+        ScanningResult.setResult(mutableDataList.map { it.textObservable.value!! })
     }
 
     fun exitApp() {

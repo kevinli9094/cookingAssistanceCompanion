@@ -6,7 +6,7 @@
 
         <variable
             name="model"
-            type="com.kevin.cookingassistancecompanion.viewmodels.ResultItemViewModel" />
+            type="com.kevin.cookingassistancecompanion.viewmodels.ScannedResultItemViewModel" />
 
     </data>
 
@@ -17,6 +17,30 @@
         android:background="@drawable/background_result_item"
         >
 
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@={model.textObservable}"
+            android:layout_marginEnd="150dp"
+            android:layout_marginStart="20dp"
+            app:visibleOrGone="@{model.editableObservable}"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Done"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/editText"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="@{() -> model.done()}"
+            app:visibleOrGone="@{model.editableObservable}"/>
+
         <TextView
             android:id="@+id/text"
             android:layout_width="wrap_content"
@@ -25,8 +49,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="20dp"
-            android:text="@{model.text}"
+            android:text="@{model.textObservable}"
             tools:text="temp ingredient"
+            app:visibleOrGone="@{!model.editableObservable}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

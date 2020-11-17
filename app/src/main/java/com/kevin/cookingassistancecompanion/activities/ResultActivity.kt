@@ -11,6 +11,7 @@ class ResultActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityResultBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = this
         setContentView(binding.root)
 
         val viewModel = ResultActivityViewModel()
@@ -24,7 +25,7 @@ class ResultActivity : AppCompatActivity() {
     ) {
         binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = ResultAdapter(viewModel)
+        val adapter = ResultAdapter(viewModel, this)
         binding.recyclerView.adapter = adapter
 
         viewModel.getData().observe(this, {
