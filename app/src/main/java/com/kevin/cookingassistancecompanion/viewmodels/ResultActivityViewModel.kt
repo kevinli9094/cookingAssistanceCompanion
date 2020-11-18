@@ -1,6 +1,5 @@
 package com.kevin.cookingassistancecompanion.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,9 +22,13 @@ class ResultActivityViewModel : ViewModel() {
         MutableLiveData(emptyList())
     }
 
+    private val mutableScrollPosition = MutableLiveData(0)
+
     private val mutableDataList = mutableListOf<ResultItemViewModel>()
 
     private val mutableIsLoading: MutableLiveData<Boolean> = MutableLiveData(true)
+
+    val scrollPositionObservable: LiveData<Int> = mutableScrollPosition
 
     init {
         processData()
@@ -104,8 +107,10 @@ class ResultActivityViewModel : ViewModel() {
     }
 
     fun addEditableItem(){
-        mutableDataList.add(max(mutableDataList.size -1, 0), ScannedResultItemViewModel("", editable = true))
+        val position = max(mutableDataList.size -1, 0)
+        mutableDataList.add(position, ScannedResultItemViewModel("", editable = true))
         mutableData.value = mutableDataList
+        mutableScrollPosition.value = mutableDataList.size -1
     }
 
     fun save() {

@@ -96,7 +96,7 @@ class ScanActivity : AppCompatActivity() {
         val datastore = RealmItemNamesDatastore()
 
         GlobalScope.launch(Dispatchers.IO) {
-            if(datastore.getTAndTItemNames().isEmpty()){
+            if (datastore.getTAndTItemNames().isEmpty()) {
                 return@launch
             }
             var reader: BufferedReader? = null

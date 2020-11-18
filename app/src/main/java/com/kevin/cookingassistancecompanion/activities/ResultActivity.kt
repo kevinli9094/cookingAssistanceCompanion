@@ -23,13 +23,14 @@ class ResultActivity : AppCompatActivity() {
         binding: ActivityResultBinding,
         viewModel: ResultActivityViewModel
     ) {
-        binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = ResultAdapter(viewModel, this)
+        val adapter = ResultAdapter(viewModel)
         binding.recyclerView.adapter = adapter
 
-        viewModel.getData().observe(this, {
-            adapter.setData(it)
-        })
+        adapter.setDataSource(viewModel.getData(), this)
+
+        viewModel.scrollPositionObservable.observe(this) { position ->
+            binding.recyclerView.smoothScrollToPosition(position)
+        }
     }
 }

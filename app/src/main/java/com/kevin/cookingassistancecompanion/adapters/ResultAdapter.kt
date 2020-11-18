@@ -1,11 +1,8 @@
 package com.kevin.cookingassistancecompanion.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LifecycleOwner
-import androidx.recyclerview.widget.RecyclerView
 import com.kevin.cookingassistancecompanion.R
 import com.kevin.cookingassistancecompanion.databinding.ItemAddBinding
 import com.kevin.cookingassistancecompanion.databinding.ItemResultBinding
@@ -16,17 +13,8 @@ import com.kevin.cookingassistancecompanion.viewmodels.ScannedResultItemViewMode
 
 
 class ResultAdapter(
-    private val activityViewModel: ResultActivityViewModel,
-    private val lifecycleOwner: LifecycleOwner
-) : RecyclerView.Adapter<ViewHolder>() {
-    private lateinit var data: List<ResultItemViewModel>
-
-
-    // todo add diffUtil later
-    fun setData(list: List<ResultItemViewModel>) {
-        data = list
-        notifyDataSetChanged()
-    }
+    private val activityViewModel: ResultActivityViewModel
+) : DiffUtilAdapter<ResultItemViewModel>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = if (viewType == ITEM_TYPE_RESULT) {
@@ -64,6 +52,10 @@ class ResultAdapter(
             binding.model = activityViewModel
             binding.executePendingBindings()
         }
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
+        onBindViewHolder(holder, position)
     }
 
     override fun getItemCount(): Int {

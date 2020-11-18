@@ -8,13 +8,14 @@ import androidx.lifecycle.ViewModel
 
 abstract class ResultItemViewModel(
     text: String,
-    val itemType : Int
-):ViewModel(), LifecycleOwner {
+    val itemType: Int
+) : ViewModel(), LifecycleOwner {
 
-    companion object{
+    companion object {
         const val ITEM_TYPE_RESULT = 1
         const val ITEM_TYPE_BUTTON = 2
     }
+
     val textObservable = MutableLiveData(text)
     private val lifecycleRegistry = LifecycleRegistry(this)
 
@@ -23,7 +24,7 @@ abstract class ResultItemViewModel(
         lifecycleRegistry.currentState = Lifecycle.State.STARTED
     }
 
-    fun destroyLifecycle(){
+    fun destroyLifecycle() {
         lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
     }
 
