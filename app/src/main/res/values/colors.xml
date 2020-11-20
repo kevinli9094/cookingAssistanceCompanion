@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="unhandled_gray">#A3A8AF</color>
+    <color name="delete_backgroud">#b80f0a</color>
 </resources>

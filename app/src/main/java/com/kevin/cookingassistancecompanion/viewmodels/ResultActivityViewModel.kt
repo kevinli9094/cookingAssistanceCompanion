@@ -1,6 +1,5 @@
 package com.kevin.cookingassistancecompanion.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,9 +11,10 @@ import com.intuit.fuzzymatcher.domain.ElementType
 import com.intuit.fuzzymatcher.domain.MatchType
 import com.kevin.cookingassistancecompanion.ScanningResult
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
+import kotlin.math.max
 
 class ResultActivityViewModel : ViewModel() {
-    companion object{
+    companion object {
         const val TAG = "ResultActivityViewModel"
     }
 
@@ -22,13 +22,19 @@ class ResultActivityViewModel : ViewModel() {
         MutableLiveData(emptyList())
     }
 
+    private val mutableScrollPosition = MutableLiveData(0)
+
+    private val mutableDataList = mutableListOf<ResultItemViewModel>()
+
     private val mutableIsLoading: MutableLiveData<Boolean> = MutableLiveData(true)
+
+    val scrollPositionObservable: LiveData<Int> = mutableScrollPosition
 
     init {
         processData()
     }
-    private fun processData(){
-        Log.i(TAG, "start time")
+
+    private fun processData() {
         val outputResult = ScanningResult.getSortedResult()
         val documentList: List<Document> =
             outputResult.mapIndexed { index, value ->
@@ -67,20 +73,21 @@ class ResultActivityViewModel : ViewModel() {
         val matchService = MatchService()
         val result = matchService.applyMatch(existingDoc, documentList)
 
-        val viewModels: List<ResultItemViewModel> = result.map {
-            ResultItemViewModel(it.key.elements.first().value as String)
+        val viewModelScanneds: List<ScannedResultItemViewModel> = result.map {
+            ScannedResultItemViewModel(it.key.elements.first().value as String)
         }
 
-        mutableData.value = viewModels
-        mutableIsLoading.value = false
-        Log.i(TAG, "end time")
+        mutableDataList.addAll(viewModelScanneds)
+        mutableDataList.add(ButtonResultItemViewModel("Add"))
+        mutableData.postValue(mutableDataList)
+        mutableIsLoading.postValue(false)
     }
 
     fun getData(): LiveData<List<ResultItemViewModel>> {
         return mutableData
     }
 
-    fun getIsLoading(): LiveData<Boolean>{
+    fun getIsLoading(): LiveData<Boolean> {
         return mutableIsLoading
     }
 
@@ -94,16 +101,22 @@ class ResultActivityViewModel : ViewModel() {
     /**
      * remove item from result list
      */
-    fun remove(index: Int) {
-
+    @Synchronized
+    fun remove(viewModel: ResultItemViewModel) {
+        viewModel.destroyLifecycle()
+        mutableDataList.remove(viewModel)
+        mutableData.postValue(mutableDataList)
     }
 
-    fun discardRest() {
-
+    fun addEditableItem() {
+        val position = max(mutableDataList.size - 1, 0)
+        mutableDataList.add(position, ScannedResultItemViewModel("", editable = true))
+        mutableData.postValue(mutableDataList)
+        mutableScrollPosition.postValue(mutableDataList.size - 1)
     }
 
-    fun saveRest() {
-
+    fun save() {
+        ScanningResult.setResult(mutableDataList.map { it.textObservable.value!! })
     }
 
     fun exitApp() {

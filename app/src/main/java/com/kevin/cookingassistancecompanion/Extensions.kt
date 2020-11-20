@@ -2,6 +2,7 @@ package com.kevin.cookingassistancecompanion
 
 import android.view.View
 import android.view.ViewTreeObserver
+import androidx.databinding.BindingAdapter
 
 inline fun View.afterMeasured(crossinline block: () -> Unit) {
     viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -12,4 +13,13 @@ inline fun View.afterMeasured(crossinline block: () -> Unit) {
             }
         }
     })
+}
+
+@BindingAdapter("visibleOrGone")
+fun View.visibleOrGone(flag: Boolean){
+    this.visibility = if(flag){
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
 }
