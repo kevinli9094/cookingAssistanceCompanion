@@ -1,26 +1,49 @@
 package com.kevin.cookingassistancecompanion.adapters
 
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 abstract class DiffUtilAdapter<T> : RecyclerView.Adapter<ViewHolder>() {
 
-    private var newData: List<T> = emptyList()
-    protected var data: List<T> = emptyList()
+    companion object{
+        const val TAG = "DiffUtilAdapter"
+    }
 
+    private var newData: List<T> = emptyList()
+    protected var data: MutableList<T> = mutableListOf()
+
+    private var channel: Channel<List<T>>? = null
     fun setDataSource(dataSource: LiveData<List<T>>, lifecycleOwner: LifecycleOwner) {
-        lifecycleOwner.lifecycleScope.launch {
-            dataSource.observe(lifecycleOwner) {
+        if(channel!= null){
+            Log.w(TAG, "Data source should not be set twice")
+            return
+        }
+        channel = Channel()
+        lifecycleOwner.lifecycleScope.launch(Dispatchers.Default) {
+            channel!!.consumeEach {
                 newData = it
-                val diffResult = DiffUtil.calculateDiff(diffUtilCallback, true)
-                diffResult.dispatchUpdatesTo(this@DiffUtilAdapter)
-                data = it
+                val diffResult = DiffUtil.calculateDiff(diffUtilCallback, false)
+                withContext(Dispatchers.Main){
+                    data = it.toMutableList()
+                    diffResult.dispatchUpdatesTo(this@DiffUtilAdapter)
+                }
             }
         }
+        dataSource.observe(lifecycleOwner) {
+            lifecycleOwner.lifecycleScope.launch {
+                channel!!.send(it)
+            }
+        }
+
     }
 
     open fun getOldListSize(): Int {

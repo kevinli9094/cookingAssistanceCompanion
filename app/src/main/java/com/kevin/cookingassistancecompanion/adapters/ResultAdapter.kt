@@ -61,6 +61,4 @@ class ResultAdapter(
     override fun getItemCount(): Int {
         return data.size
     }
-
-
 }

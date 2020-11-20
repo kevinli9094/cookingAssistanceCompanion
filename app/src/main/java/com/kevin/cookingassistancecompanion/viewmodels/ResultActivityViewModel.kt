@@ -14,7 +14,7 @@ import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
 import kotlin.math.max
 
 class ResultActivityViewModel : ViewModel() {
-    companion object{
+    companion object {
         const val TAG = "ResultActivityViewModel"
     }
 
@@ -33,7 +33,8 @@ class ResultActivityViewModel : ViewModel() {
     init {
         processData()
     }
-    private fun processData(){
+
+    private fun processData() {
         val outputResult = ScanningResult.getSortedResult()
         val documentList: List<Document> =
             outputResult.mapIndexed { index, value ->
@@ -78,15 +79,15 @@ class ResultActivityViewModel : ViewModel() {
 
         mutableDataList.addAll(viewModelScanneds)
         mutableDataList.add(ButtonResultItemViewModel("Add"))
-        mutableData.value = mutableDataList
-        mutableIsLoading.value = false
+        mutableData.postValue(mutableDataList)
+        mutableIsLoading.postValue(false)
     }
 
     fun getData(): LiveData<List<ResultItemViewModel>> {
         return mutableData
     }
 
-    fun getIsLoading(): LiveData<Boolean>{
+    fun getIsLoading(): LiveData<Boolean> {
         return mutableIsLoading
     }
 
@@ -100,17 +101,18 @@ class ResultActivityViewModel : ViewModel() {
     /**
      * remove item from result list
      */
-    fun remove(index: Int) {
-        mutableDataList[index].destroyLifecycle()
-        mutableDataList.removeAt(index)
-        mutableData.value = mutableDataList
+    @Synchronized
+    fun remove(viewModel: ResultItemViewModel) {
+        viewModel.destroyLifecycle()
+        mutableDataList.remove(viewModel)
+        mutableData.postValue(mutableDataList)
     }
 
-    fun addEditableItem(){
-        val position = max(mutableDataList.size -1, 0)
+    fun addEditableItem() {
+        val position = max(mutableDataList.size - 1, 0)
         mutableDataList.add(position, ScannedResultItemViewModel("", editable = true))
-        mutableData.value = mutableDataList
-        mutableScrollPosition.value = mutableDataList.size -1
+        mutableData.postValue(mutableDataList)
+        mutableScrollPosition.postValue(mutableDataList.size - 1)
     }
 
     fun save() {
