@@ -6,10 +6,10 @@ import androidx.databinding.DataBindingUtil
 import com.kevin.cookingassistancecompanion.R
 import com.kevin.cookingassistancecompanion.databinding.ItemAddBinding
 import com.kevin.cookingassistancecompanion.databinding.ItemResultBinding
-import com.kevin.cookingassistancecompanion.viewmodels.ResultActivityViewModel
-import com.kevin.cookingassistancecompanion.viewmodels.ResultItemViewModel
-import com.kevin.cookingassistancecompanion.viewmodels.ResultItemViewModel.Companion.ITEM_TYPE_RESULT
-import com.kevin.cookingassistancecompanion.viewmodels.ScannedResultItemViewModel
+import com.kevin.cookingassistancecompanion.viewmodels.result.ResultActivityViewModel
+import com.kevin.cookingassistancecompanion.viewmodels.result.ResultItemViewModel
+import com.kevin.cookingassistancecompanion.viewmodels.result.ResultItemViewModel.Companion.ITEM_TYPE_RESULT
+import com.kevin.cookingassistancecompanion.viewmodels.result.ScannedResultItemViewModel
 
 
 class ResultAdapter(

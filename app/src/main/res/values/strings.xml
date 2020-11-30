@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CookingAssistanceCompanion</string>
+
+    <string name="choose_type">Choose which store\'s recipe to scan: </string>
 </resources>

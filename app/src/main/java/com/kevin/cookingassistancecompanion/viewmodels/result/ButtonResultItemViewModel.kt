@@ -1,4 +1,4 @@
-package com.kevin.cookingassistancecompanion.viewmodels
+package com.kevin.cookingassistancecompanion.viewmodels.result
 
 class ButtonResultItemViewModel(
     text: String

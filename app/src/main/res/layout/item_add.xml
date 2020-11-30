@@ -6,7 +6,7 @@
 
         <variable
             name="model"
-            type="com.kevin.cookingassistancecompanion.viewmodels.ResultActivityViewModel" />
+            type="com.kevin.cookingassistancecompanion.viewmodels.result.ResultActivityViewModel" />
 
     </data>
 

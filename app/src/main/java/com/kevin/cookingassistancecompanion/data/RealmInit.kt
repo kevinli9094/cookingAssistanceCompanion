@@ -8,7 +8,8 @@ class RealmInit {
     fun init(context: Context) {
         Realm.init(context)
         val realmConfig = RealmConfiguration.Builder()
-            .assetFile("default.realm")
+//            .assetFile("default.realm")
+            .deleteRealmIfMigrationNeeded()
             .build()
         Realm.setDefaultConfiguration(realmConfig)
     }
