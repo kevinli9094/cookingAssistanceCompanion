@@ -99,13 +99,6 @@ class ResultActivityViewModel : ViewModel() {
     }
 
     /**
-     * map a string in [fromIndex] to [to] string and update result list
-     */
-    fun mapTo(fromIndex: Int, to: String) {
-        //todo
-    }
-
-    /**
      * remove item from result list
      */
     @Synchronized
@@ -124,14 +117,6 @@ class ResultActivityViewModel : ViewModel() {
 
     fun save() {
         ScanningResult.setResult(mutableDataList.map { it.textObservable.value!! })
-    }
-
-    fun exitApp() {
-
-    }
-
-    fun scanAgain() {
-
     }
 
     override fun onCleared() {

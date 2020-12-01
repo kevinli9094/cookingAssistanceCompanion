@@ -16,9 +16,11 @@ import com.kevin.cookingassistancecompanion.adapters.ViewHolder
 import com.kevin.cookingassistancecompanion.databinding.ActivityResultBinding
 import com.kevin.cookingassistancecompanion.databinding.ItemResultBinding
 import com.kevin.cookingassistancecompanion.viewmodels.result.ResultActivityViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@ExperimentalCoroutinesApi
 class ResultActivity : AppCompatActivity() {
     companion object {
         const val ITEM_DELETE_DELAY_MS = 3000L

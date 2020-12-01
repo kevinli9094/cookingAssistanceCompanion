@@ -20,6 +20,7 @@ fun Spinner.setSpinnerEntries(entries: List<Any>?) {
  */
 fun Spinner.setSpinnerValue(value: Any?) {
     if (adapter != null) {
+        @Suppress("UNCHECKED_CAST")
         val position = (adapter as ArrayAdapter<Any>).getPosition(value)
         setSelection(position, false)
         tag = position

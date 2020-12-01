@@ -119,15 +119,16 @@
             app:layout_constraintBottom_toTopOf="@id/text2"
             />
 
-        <TextView
+        <Spinner
             android:id="@+id/text2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="@{model.foregroundAlphaObservable}"
-            android:text="@{model.convertedTextObservable}"
             android:translationX="@{model.foregroundTranslationXObservable}"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="30dp"
+            app:selectedValue="@={model.convertedTextObservable}"
+            app:entries="@{model.spinnerEntriesObservable}"
             app:visibleOrGone="@{model.convertedObservable}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toText"

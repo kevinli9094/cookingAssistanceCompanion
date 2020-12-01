@@ -13,7 +13,6 @@ class TextAnalyzerFactory {
             ScanningResult.ResultType.TANDT_ENGLISH -> {
                 TAndTTextAnalyzer(overlay)
             }
-            else -> throw IllegalStateException("Unrecognized Scan type")
         }
     }
 }
