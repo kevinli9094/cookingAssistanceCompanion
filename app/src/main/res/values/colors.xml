@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="unhandled_gray">#A3A8AF</color>
     <color name="delete_backgroud">#b80f0a</color>
+    <color name="loading_background">#E0000000</color>
 </resources>
