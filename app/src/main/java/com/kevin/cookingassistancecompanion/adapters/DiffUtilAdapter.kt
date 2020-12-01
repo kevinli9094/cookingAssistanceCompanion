@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
@@ -22,6 +23,8 @@ abstract class DiffUtilAdapter<T> : RecyclerView.Adapter<ViewHolder>() {
     protected var data: MutableList<T> = mutableListOf()
 
     private var channel: Channel<List<T>>? = null
+
+    @ExperimentalCoroutinesApi
     fun setDataSource(dataSource: LiveData<List<T>>, lifecycleOwner: LifecycleOwner) {
         if(channel!= null){
             Log.w(TAG, "Data source should not be set twice")

@@ -3,6 +3,7 @@ package com.kevin.cookingassistancecompanion.activities
 import android.graphics.Canvas
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_IDLE
@@ -14,10 +15,12 @@ import com.kevin.cookingassistancecompanion.adapters.ResultAdapter
 import com.kevin.cookingassistancecompanion.adapters.ViewHolder
 import com.kevin.cookingassistancecompanion.databinding.ActivityResultBinding
 import com.kevin.cookingassistancecompanion.databinding.ItemResultBinding
-import com.kevin.cookingassistancecompanion.viewmodels.ResultActivityViewModel
+import com.kevin.cookingassistancecompanion.viewmodels.result.ResultActivityViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@ExperimentalCoroutinesApi
 class ResultActivity : AppCompatActivity() {
     companion object {
         const val ITEM_DELETE_DELAY_MS = 3000L
@@ -29,7 +32,7 @@ class ResultActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         setContentView(binding.root)
 
-        val viewModel = ResultActivityViewModel()
+        val viewModel = ViewModelProvider(this).get(ResultActivityViewModel::class.java)
         binding.model = viewModel
         setupRecyclerView(binding, viewModel)
     }
@@ -70,7 +73,6 @@ class ResultActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
                 this@ResultActivity.lifecycleScope.launch {
                     delay(ITEM_DELETE_DELAY_MS)
                     val model = ((viewHolder as ViewHolder).binding as ItemResultBinding).model!!

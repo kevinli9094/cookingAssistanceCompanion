@@ -1,4 +1,4 @@
-package com.kevin.cookingassistancecompanion.viewmodels
+package com.kevin.cookingassistancecompanion.viewmodels.result
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 abstract class ResultItemViewModel(
     text: String,
     val itemType: Int
-) : ViewModel(), LifecycleOwner {
+) : LifecycleOwner {
 
     companion object {
         const val ITEM_TYPE_RESULT = 1
@@ -26,11 +26,6 @@ abstract class ResultItemViewModel(
 
     fun destroyLifecycle() {
         lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        destroyLifecycle()
     }
 
     override fun getLifecycle(): Lifecycle {

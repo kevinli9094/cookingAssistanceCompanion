@@ -7,21 +7,31 @@
 
         <variable
             name="model"
-            type="com.kevin.cookingassistancecompanion.viewmodels.ScannedResultItemViewModel" />
+            type="com.kevin.cookingassistancecompanion.viewmodels.result.ScannedResultItemViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp">
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="text1,text2" />
 
         <View
             android:id="@+id/background"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:background="@color/delete_backgroud"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <ImageView
             android:id="@+id/deletedImage"
@@ -36,12 +46,14 @@
         <View
             android:id="@+id/background2"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:alpha="@{model.foregroundAlphaObservable}"
             android:background="@drawable/background_result_item"
             android:translationX="@{model.foregroundTranslationXObservable}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <EditText
             android:id="@+id/editText"
@@ -52,6 +64,8 @@
             android:alpha="@{model.foregroundAlphaObservable}"
             android:text="@={model.textObservable}"
             android:translationX="@{model.foregroundTranslationXObservable}"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,18 +87,53 @@
             app:visibleOrGone="@{model.editableObservable}" />
 
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/text1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:alpha="@{model.foregroundAlphaObservable}"
             android:text="@{model.textObservable}"
             android:translationX="@{model.foregroundTranslationXObservable}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="30dp"
+            app:layout_goneMarginBottom="30dp"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintBottom_toTopOf="@id/toText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:visibleOrGone="@{!model.editableObservable}"
             tools:text="temp ingredient" />
+
+        <TextView
+            android:id="@+id/toText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:alpha="@{model.foregroundAlphaObservable}"
+            android:translationX="@{model.foregroundTranslationXObservable}"
+            android:text="to"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            app:visibleOrGone="@{model.convertedObservable}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text1"
+            app:layout_constraintBottom_toTopOf="@id/text2"
+            />
+
+        <Spinner
+            android:id="@+id/text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="@{model.foregroundAlphaObservable}"
+            android:translationX="@{model.foregroundTranslationXObservable}"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="30dp"
+            app:selectedValue="@={model.convertedTextObservable}"
+            app:entries="@{model.spinnerEntriesObservable}"
+            app:visibleOrGone="@{model.convertedObservable}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

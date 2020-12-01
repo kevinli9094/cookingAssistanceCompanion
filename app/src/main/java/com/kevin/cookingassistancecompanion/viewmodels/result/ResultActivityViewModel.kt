@@ -1,4 +1,4 @@
-package com.kevin.cookingassistancecompanion.viewmodels
+package com.kevin.cookingassistancecompanion.viewmodels.result
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,9 @@ import com.intuit.fuzzymatcher.domain.Element
 import com.intuit.fuzzymatcher.domain.ElementType
 import com.intuit.fuzzymatcher.domain.MatchType
 import com.kevin.cookingassistancecompanion.ScanningResult
+import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
+import com.kevin.cookingassistancecompanion.utility.ItemIngredientConverter
 import kotlin.math.max
 
 class ResultActivityViewModel : ViewModel() {
@@ -29,6 +31,11 @@ class ResultActivityViewModel : ViewModel() {
     private val mutableIsLoading: MutableLiveData<Boolean> = MutableLiveData(true)
 
     val scrollPositionObservable: LiveData<Int> = mutableScrollPosition
+
+    private val converter = ItemIngredientConverter(
+        RealmIngredientsDatastore(),
+        RealmItemNamesDatastore()
+    )
 
     init {
         processData()
@@ -53,12 +60,12 @@ class ResultActivityViewModel : ViewModel() {
                     .createDocument()
             }
 
-        val correctItemList = RealmItemNamesDatastore().getTAndTItemNames()
+        val correctItemList = RealmItemNamesDatastore().getTAndTItemPairList()
         val existingDoc = correctItemList.mapIndexed { index, value ->
             Builder(index.toString())
                 .addElement(
                     Element.Builder<String>()
-                        .setValue(value)
+                        .setValue(value.name)
                         .setType(ElementType.TEXT)
                         .setMatchType(MatchType.EQUALITY)
                         .setPreProcessingFunction {
@@ -74,7 +81,7 @@ class ResultActivityViewModel : ViewModel() {
         val result = matchService.applyMatch(existingDoc, documentList)
 
         val viewModelScanneds: List<ScannedResultItemViewModel> = result.map {
-            ScannedResultItemViewModel(it.key.elements.first().value as String)
+            ScannedResultItemViewModel(it.key.elements.first().value as String, converter, editable = false)
         }
 
         mutableDataList.addAll(viewModelScanneds)
@@ -92,13 +99,6 @@ class ResultActivityViewModel : ViewModel() {
     }
 
     /**
-     * map a string in [fromIndex] to [to] string and update result list
-     */
-    fun mapTo(fromIndex: Int, to: String) {
-        //todo
-    }
-
-    /**
      * remove item from result list
      */
     @Synchronized
@@ -110,7 +110,7 @@ class ResultActivityViewModel : ViewModel() {
 
     fun addEditableItem() {
         val position = max(mutableDataList.size - 1, 0)
-        mutableDataList.add(position, ScannedResultItemViewModel("", editable = true))
+        mutableDataList.add(position, ScannedResultItemViewModel("", converter, editable = true))
         mutableData.postValue(mutableDataList)
         mutableScrollPosition.postValue(mutableDataList.size - 1)
     }
@@ -119,11 +119,8 @@ class ResultActivityViewModel : ViewModel() {
         ScanningResult.setResult(mutableDataList.map { it.textObservable.value!! })
     }
 
-    fun exitApp() {
-
-    }
-
-    fun scanAgain() {
-
+    override fun onCleared() {
+        mutableDataList.forEach { it.destroyLifecycle() }
+        mutableDataList.clear()
     }
 }

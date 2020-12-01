@@ -15,7 +15,8 @@ import androidx.camera.core.SurfaceOrientedMeteringPointFactory
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
-import com.kevin.cookingassistancecompanion.textAnalyzer.TAndTTextAnalyzer
+import com.kevin.cookingassistancecompanion.textAnalyzer.TextAnalyzerFactory
+import com.kevin.cookingassistancecompanion.utility.afterMeasured
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -56,7 +57,10 @@ class CameraManager(
                 .setTargetResolution(Size(720, 1280))
                 .build()
                 .also {
-                    it.setAnalyzer(executor, ImageAnalyzer(TAndTTextAnalyzer(overlayView)))
+                    it.setAnalyzer(
+                        executor,
+                        ImageAnalyzer(TextAnalyzerFactory().getTextAnalyzer(overlayView))
+                    )
                 }
 
             try {
