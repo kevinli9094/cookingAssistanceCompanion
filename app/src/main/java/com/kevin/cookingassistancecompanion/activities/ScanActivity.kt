@@ -15,6 +15,7 @@ import com.kevin.cookingassistancecompanion.CameraOverlay
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
 import com.kevin.cookingassistancecompanion.databinding.ActivityScanBinding
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
@@ -22,6 +23,7 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 
+@ExperimentalCoroutinesApi
 class ScanActivity : AppCompatActivity() {
 
     companion object {

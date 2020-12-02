@@ -3,6 +3,7 @@ package com.kevin.cookingassistancecompanion.viewmodels.result
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.intuit.fuzzymatcher.component.MatchService
 import com.intuit.fuzzymatcher.domain.Document
 import com.intuit.fuzzymatcher.domain.Document.Builder
@@ -13,6 +14,9 @@ import com.kevin.cookingassistancecompanion.ScanningResult
 import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
 import com.kevin.cookingassistancecompanion.utility.ItemIngredientConverter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.max
 
 class ResultActivityViewModel : ViewModel() {
@@ -38,10 +42,12 @@ class ResultActivityViewModel : ViewModel() {
     )
 
     init {
-        processData()
+        viewModelScope.launch(Dispatchers.Default) {
+            processData()
+        }
     }
 
-    private fun processData() {
+    private suspend fun processData() {
         val outputResult = ScanningResult.getSortedResult()
         val documentList: List<Document> =
             outputResult.mapIndexed { index, value ->
@@ -80,14 +86,20 @@ class ResultActivityViewModel : ViewModel() {
         val matchService = MatchService()
         val result = matchService.applyMatch(existingDoc, documentList)
 
-        val viewModelScanneds: List<ScannedResultItemViewModel> = result.map {
-            ScannedResultItemViewModel(it.key.elements.first().value as String, converter, editable = false)
-        }
+        withContext(Dispatchers.Main) {
+            val viewModelScanneds: List<ScannedResultItemViewModel> = result.map {
+                ScannedResultItemViewModel(
+                    it.key.elements.first().value as String,
+                    converter,
+                    editable = false
+                )
+            }
 
-        mutableDataList.addAll(viewModelScanneds)
-        mutableDataList.add(ButtonResultItemViewModel("Add"))
-        mutableData.postValue(mutableDataList)
-        mutableIsLoading.postValue(false)
+            mutableDataList.addAll(viewModelScanneds)
+            mutableDataList.add(ButtonResultItemViewModel("Add"))
+            mutableData.postValue(mutableDataList)
+            mutableIsLoading.postValue(false)
+        }
     }
 
     fun getData(): LiveData<List<ResultItemViewModel>> {
