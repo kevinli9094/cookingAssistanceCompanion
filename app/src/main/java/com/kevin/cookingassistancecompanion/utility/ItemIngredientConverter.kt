@@ -2,6 +2,7 @@ package com.kevin.cookingassistancecompanion.utility
 
 import com.kevin.cookingassistancecompanion.ScanningResult
 import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
+import com.kevin.cookingassistancecompanion.data.RealmItemIngredientMapDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
 import com.kevin.cookingassistancecompanion.models.IngredientMatch
 import com.kevin.cookingassistancecompanion.models.ItemConvertedResult
@@ -11,10 +12,11 @@ import com.kevin.cookingassistancecompanion.models.ItemConvertedResult
  */
 class ItemIngredientConverter(
     private val ingredientsDatastore: RealmIngredientsDatastore,
-    private val itemNamesDatastore: RealmItemNamesDatastore
+    private val itemNamesDatastore: RealmItemNamesDatastore,
+    private val itemIngredientMapDatastore: RealmItemIngredientMapDatastore
 ) {
 
-    fun covert(item: String): ItemConvertedResult {
+    fun convert(item: String): ItemConvertedResult {
         return when (ScanningResult.resultType) {
             ScanningResult.ResultType.TANDT_CHINESE -> convertTANDTChineseItems(item)
             ScanningResult.ResultType.TANDT_ENGLISH -> convertTANDTEnglishItems(item)
@@ -24,7 +26,8 @@ class ItemIngredientConverter(
     private fun convertTANDTChineseItems(item: String): ItemConvertedResult {
         val map = itemNamesDatastore.getTAndTItemMap()
         val ingredientList = ingredientsDatastore.getChineseIngredients()
-        return convertTANDTChinese(item, map, ingredientList)
+        val itemIngredientMap = itemIngredientMapDatastore.getTAndTMapping()
+        return convertTANDTChinese(item, map, ingredientList, itemIngredientMap)
     }
 
     private fun convertTANDTEnglishItems(item: String): ItemConvertedResult {
@@ -38,8 +41,14 @@ class ItemIngredientConverter(
     private fun convertTANDTChinese(
         itemName: String,
         itemMap: Map<String, String>,
-        chineseIngredients: List<String>
+        chineseIngredients: List<String>,
+        itemIngredientMap: Map<String, String>
     ): ItemConvertedResult {
+
+        val directMapping = itemIngredientMap[itemName]
+        if (directMapping != null){
+            return ItemConvertedResult(itemName, listOf(IngredientMatch(directMapping, 1)))
+        }
         // convert it to T&T Chinese item
         val chineseItem = itemMap[itemName]
 

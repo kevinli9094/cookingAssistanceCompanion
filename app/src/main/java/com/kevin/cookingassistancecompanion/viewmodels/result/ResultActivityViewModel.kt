@@ -12,6 +12,7 @@ import com.intuit.fuzzymatcher.domain.ElementType
 import com.intuit.fuzzymatcher.domain.MatchType
 import com.kevin.cookingassistancecompanion.ScanningResult
 import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
+import com.kevin.cookingassistancecompanion.data.RealmItemIngredientMapDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
 import com.kevin.cookingassistancecompanion.utility.ItemIngredientConverter
 import kotlinx.coroutines.Dispatchers
@@ -36,9 +37,14 @@ class ResultActivityViewModel : ViewModel() {
 
     val scrollPositionObservable: LiveData<Int> = mutableScrollPosition
 
+    private val ingredientDatastore = RealmIngredientsDatastore()
+    private val itemNamesDatastore = RealmItemNamesDatastore()
+    private val itemIngredientsDatastore = RealmItemIngredientMapDatastore()
+
     private val converter = ItemIngredientConverter(
-        RealmIngredientsDatastore(),
-        RealmItemNamesDatastore()
+        ingredientDatastore,
+        itemNamesDatastore,
+        itemIngredientsDatastore
     )
 
     init {
@@ -91,6 +97,9 @@ class ResultActivityViewModel : ViewModel() {
                 ScannedResultItemViewModel(
                     it.key.elements.first().value as String,
                     converter,
+                    ingredientDatastore,
+                    itemNamesDatastore,
+                    itemIngredientsDatastore,
                     editable = false
                 )
             }
@@ -122,7 +131,17 @@ class ResultActivityViewModel : ViewModel() {
 
     fun addEditableItem() {
         val position = max(mutableDataList.size - 1, 0)
-        mutableDataList.add(position, ScannedResultItemViewModel("", converter, editable = true))
+        mutableDataList.add(
+            position,
+            ScannedResultItemViewModel(
+                "",
+                converter,
+                ingredientDatastore,
+                itemNamesDatastore,
+                itemIngredientsDatastore,
+                editable = true
+            )
+        )
         mutableData.postValue(mutableDataList)
         mutableScrollPosition.postValue(mutableDataList.size - 1)
     }

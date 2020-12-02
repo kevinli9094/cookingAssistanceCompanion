@@ -39,4 +39,10 @@ class RealmItemNamesDatastore {
             it.copyToRealmOrUpdate(models)
         }
     }
+
+    fun insertSingleTAndTItemName(correctTerm: String, mapping: String){
+        realmConnection.execute {
+            it.copyToRealmOrUpdate(TAndTItemNameRealmModel(name = correctTerm, chineseName = mapping))
+        }
+    }
 }

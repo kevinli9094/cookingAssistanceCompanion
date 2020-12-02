@@ -25,4 +25,10 @@ class RealmIngredientsDatastore {
             realm.copyToRealmOrUpdate(models)
         }
     }
+
+    fun insertSingleChineseIngredient(ingredient: String){
+        realmConnection.execute { realm ->
+            realm.copyToRealmOrUpdate(ChineseIngredientRealmModel(ingredient))
+        }
+    }
 }
