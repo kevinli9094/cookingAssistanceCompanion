@@ -34,7 +34,6 @@ class ScannedResultItemViewModel constructor(
                 val convertedResult = converter.convert(it).sortedIngredient
                 if(convertedResult != null && convertedResult.isNotEmpty()){
                     convertedTextObservable.postValue(convertedResult.firstOrNull()?.ingredient)
-                    Log.i(TAG, "KL: entries size = ${convertedResult.size}")
                     spinnerEntriesObservable.postValue(convertedResult.map { it.ingredient })
                     convertedObservable.postValue(true)
                 }
@@ -49,7 +48,7 @@ class ScannedResultItemViewModel constructor(
     fun done() {
         val itemText = textObservable.value
         if(itemText == null){
-            // show user some message
+            // todo: show user some message
             return
         }
         itemNameEditableObservable.postValue(false)
@@ -79,7 +78,7 @@ class ScannedResultItemViewModel constructor(
                 convertedObservable.postValue(true)
             }
         } else {
-            // show user some message
+            // todo: show user some message
             Log.w(TAG, "ingredient field is missing while trying to add new ingredient")
         }
     }
@@ -95,7 +94,6 @@ class ScannedResultItemViewModel constructor(
             if(currentEntries != null && currentEntries.isNotEmpty()){
                 newList.addAll(currentEntries)
             }
-            Log.i(TAG, "KL: new list size = ${newList.size}")
             spinnerEntriesObservable.postValue(newList)
             convertedTextObservable.postValue(ingredient)
         }
