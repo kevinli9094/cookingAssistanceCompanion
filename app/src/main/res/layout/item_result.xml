@@ -16,124 +16,149 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp">
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="text1,text2" />
-
         <View
-            android:id="@+id/background"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/delete_backgroud"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@id/container"
+            app:layout_constraintTop_toTopOf="@id/container" />
 
         <ImageView
-            android:id="@+id/deletedImage"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
             android:src="@drawable/ic_delete"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/container"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/container" />
 
         <View
-            android:id="@+id/background2"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:alpha="@{model.foregroundAlphaObservable}"
             android:background="@drawable/background_result_item"
             android:translationX="@{model.foregroundTranslationXObservable}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="@id/container"
+            app:layout_constraintTop_toTopOf="@id/container" />
 
-        <EditText
-            android:id="@+id/editText"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="150dp"
             android:alpha="@{model.foregroundAlphaObservable}"
-            android:text="@={model.textObservable}"
+            android:paddingVertical="20dp"
             android:translationX="@{model.foregroundTranslationXObservable}"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:visibleOrGone="@{model.editableObservable}" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/doneButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha="@{model.foregroundAlphaObservable}"
-            android:onClick="@{() -> model.done()}"
-            android:text="Done"
-            android:translationX="@{model.foregroundTranslationXObservable}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/editText"
-            app:layout_constraintTop_toTopOf="parent"
-            app:visibleOrGone="@{model.editableObservable}" />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/buttonStartBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="start"
+                app:constraint_referenced_ids="doneButton,doneAddingIngredientButton, editIngredientButton" />
 
-        <TextView
-            android:id="@+id/text1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:alpha="@{model.foregroundAlphaObservable}"
-            android:text="@{model.textObservable}"
-            android:translationX="@{model.foregroundTranslationXObservable}"
-            android:layout_marginTop="30dp"
-            app:layout_goneMarginBottom="30dp"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:layout_constraintBottom_toTopOf="@id/toText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:visibleOrGone="@{!model.editableObservable}"
-            tools:text="temp ingredient" />
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:text="@={model.textObservable}"
+                app:layout_constraintBottom_toTopOf="@id/text1"
+                app:layout_constraintEnd_toStartOf="@id/buttonStartBarrier"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:visibleOrGone="@{model.itemNameEditableObservable}" />
 
-        <TextView
-            android:id="@+id/toText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:alpha="@{model.foregroundAlphaObservable}"
-            android:translationX="@{model.foregroundTranslationXObservable}"
-            android:text="to"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            app:visibleOrGone="@{model.convertedObservable}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text1"
-            app:layout_constraintBottom_toTopOf="@id/text2"
-            />
+            <Button
+                android:id="@+id/doneButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:onClick="@{() -> model.done()}"
+                android:text="Done"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:visibleOrGone="@{model.itemNameEditableObservable}" />
 
-        <Spinner
-            android:id="@+id/text2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha="@{model.foregroundAlphaObservable}"
-            android:translationX="@{model.foregroundTranslationXObservable}"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="30dp"
-            app:selectedValue="@={model.convertedTextObservable}"
-            app:entries="@{model.spinnerEntriesObservable}"
-            app:visibleOrGone="@{model.convertedObservable}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toText"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+            <Button
+                android:id="@+id/editIngredientButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:maxWidth="150dp"
+                android:onClick="@{() -> model.editMissingIngredient()}"
+                android:text="Add missing ingredient"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:visibleOrGone="@{!model.itemNameEditableObservable &amp;&amp; !model.convertedObservable &amp;&amp; !model.ingredientEditableObservable}" />
 
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:text="@{model.textObservable}"
+                app:layout_constraintBottom_toTopOf="@id/toText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editText"
+                app:visibleOrGone="@{!model.itemNameEditableObservable}"
+                tools:text="temp ingredient" />
+
+            <TextView
+                android:id="@+id/toText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
+                android:layout_marginStart="20dp"
+                android:text="to"
+                app:layout_constraintBottom_toTopOf="@id/ingredientEditText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text1"
+                app:visibleOrGone="@{model.convertedObservable || model.ingredientEditableObservable}" />
+
+            <EditText
+                android:id="@+id/ingredientEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:text="@={model.convertedTextObservable}"
+                app:layout_constraintBottom_toTopOf="@id/text2"
+                app:layout_constraintEnd_toStartOf="@id/buttonStartBarrier"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toText"
+                app:visibleOrGone="@{model.ingredientEditableObservable}" />
+
+            <Spinner
+                android:id="@+id/text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                app:entries="@{model.spinnerEntriesObservable}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/buttonStartBarrier"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ingredientEditText"
+                app:selectedValue="@={model.convertedTextObservable}"
+                app:visibleOrGone="@{model.convertedObservable}" />
+
+            <Button
+                android:id="@+id/doneAddingIngredientButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:onClick="@{() -> model.addMissingIngredient()}"
+                android:text="Done"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:visibleOrGone="@{!model.itemNameEditableObservable &amp;&amp; model.ingredientEditableObservable}" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

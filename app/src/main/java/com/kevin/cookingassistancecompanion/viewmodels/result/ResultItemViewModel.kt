@@ -14,6 +14,7 @@ abstract class ResultItemViewModel(
     companion object {
         const val ITEM_TYPE_RESULT = 1
         const val ITEM_TYPE_BUTTON = 2
+        const val TAG = "ResultItemViewModel"
     }
 
     val textObservable = MutableLiveData(text)
