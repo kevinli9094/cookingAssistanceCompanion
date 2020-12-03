@@ -4,19 +4,12 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.lifecycleScope
-import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
-import com.kevin.cookingassistancecompanion.data.RealmItemIngredientMapDatastore
-import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
-import com.kevin.cookingassistancecompanion.utility.ItemIngredientConverter
+import com.kevin.cookingassistancecompanion.models.ItemConvertedResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ScannedResultItemViewModel constructor(
+abstract class ScannedResultItemViewModel constructor(
     text: String,
-    converter: ItemIngredientConverter,
-    private val ingredientsDatastore: RealmIngredientsDatastore,
-    private val itemNamesDatastore: RealmItemNamesDatastore,
-    private val itemIngredientMapDatastore: RealmItemIngredientMapDatastore,
     editable: Boolean = false
 ) : ResultItemViewModel(text = text, itemType = ITEM_TYPE_RESULT) {
 
@@ -28,11 +21,15 @@ class ScannedResultItemViewModel constructor(
     val foregroundAlphaObservable = MutableLiveData(1f)
     val foregroundTranslationXObservable = MutableLiveData(0f)
 
-    init {
-        textObservable.observe(this){
+    /**
+     * This needs to be called by child class since [convert] will use object that will only be
+     * initialized after init{} is called
+     */
+    protected fun init(){
+        textObservable.observe(this) {
             lifecycleScope.launch(Dispatchers.Default) {
-                val convertedResult = converter.convert(it).sortedIngredient
-                if(convertedResult != null && convertedResult.isNotEmpty()){
+                val convertedResult = convert(it).sortedIngredient
+                if (convertedResult != null && convertedResult.isNotEmpty()) {
                     convertedTextObservable.postValue(convertedResult.firstOrNull()?.ingredient)
                     spinnerEntriesObservable.postValue(convertedResult.map { it.ingredient })
                     convertedObservable.postValue(true)
@@ -40,40 +37,39 @@ class ScannedResultItemViewModel constructor(
             }
         }
 
-        Transformations.distinctUntilChanged(convertedTextObservable).observe(this){
+        Transformations.distinctUntilChanged(convertedTextObservable).observe(this) {
             setIngredient(it)
         }
     }
 
     fun done() {
         val itemText = textObservable.value
-        if(itemText == null){
+        if (itemText == null) {
             // todo: show user some message
             return
         }
         itemNameEditableObservable.postValue(false)
         ingredientEditableObservable.postValue(false)
-        lifecycleScope.launch(Dispatchers.Default){
-            itemNamesDatastore.insertSingleTAndTItemName(itemText, itemText)
+        lifecycleScope.launch(Dispatchers.Default) {
+            insertSingleItem(itemText)
         }
 
         val selectedValue = convertedTextObservable.value
-        if(selectedValue != null && selectedValue.isNotBlank()){
+        if (selectedValue != null && selectedValue.isNotBlank()) {
             addMissingIngredient()
         }
     }
 
-    fun editMissingIngredient(){
+    fun editMissingIngredient() {
         ingredientEditableObservable.postValue(true)
     }
 
-    fun addMissingIngredient(){
+    fun addMissingIngredient() {
         val ingredientText = convertedTextObservable.value
         val itemText = textObservable.value
-        if(ingredientText != null && itemText != null){
+        if (ingredientText != null && itemText != null) {
             lifecycleScope.launch(Dispatchers.Default) {
-                itemIngredientMapDatastore.insertTAndTMapping(itemText, ingredientText)
-                ingredientsDatastore.insertSingleChineseIngredient(ingredientText)
+                insertNewIngredientMapping(itemText, ingredientText)
                 ingredientEditableObservable.postValue(false)
                 convertedObservable.postValue(true)
             }
@@ -83,15 +79,15 @@ class ScannedResultItemViewModel constructor(
         }
     }
 
-    private fun setIngredient(ingredient: String){
-        if(ingredient.isBlank()){
+    private fun setIngredient(ingredient: String) {
+        if (ingredient.isBlank()) {
             return
         }
         val currentEntries = spinnerEntriesObservable.value
-        if(currentEntries == null || !currentEntries.contains(ingredient)){
+        if (currentEntries == null || !currentEntries.contains(ingredient)) {
             val newList = mutableListOf<String>()
             newList.add(ingredient)
-            if(currentEntries != null && currentEntries.isNotEmpty()){
+            if (currentEntries != null && currentEntries.isNotEmpty()) {
                 newList.addAll(currentEntries)
             }
             spinnerEntriesObservable.postValue(newList)
@@ -99,4 +95,20 @@ class ScannedResultItemViewModel constructor(
         }
 
     }
+
+    /**
+     * Insert a new mapping between an item and a ingredient. Should also add the ingredient if it's
+     * not already present.
+     */
+    protected abstract fun insertNewIngredientMapping(itemText: String, ingredient: String)
+
+    /**
+     * Insert an single item to correct database
+     */
+    protected abstract fun insertSingleItem(itemText: String)
+
+    /**
+     * Should return a [ItemConvertedResult] that contains data of a list of ingredients matches itemText
+     */
+    protected abstract fun convert(itemText: String): ItemConvertedResult
 }

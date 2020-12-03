@@ -14,7 +14,6 @@ import com.kevin.cookingassistancecompanion.ScanningResult
 import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemIngredientMapDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
-import com.kevin.cookingassistancecompanion.utility.ItemIngredientConverter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -41,7 +40,7 @@ class ResultActivityViewModel : ViewModel() {
     private val itemNamesDatastore = RealmItemNamesDatastore()
     private val itemIngredientsDatastore = RealmItemIngredientMapDatastore()
 
-    private val converter = ItemIngredientConverter(
+    private val viewModelFactory = ScannedResultItemVMFactory(
         ingredientDatastore,
         itemNamesDatastore,
         itemIngredientsDatastore
@@ -94,14 +93,7 @@ class ResultActivityViewModel : ViewModel() {
 
         withContext(Dispatchers.Main) {
             val viewModelScanneds: List<ScannedResultItemViewModel> = result.map {
-                ScannedResultItemViewModel(
-                    it.key.elements.first().value as String,
-                    converter,
-                    ingredientDatastore,
-                    itemNamesDatastore,
-                    itemIngredientsDatastore,
-                    editable = false
-                )
+                viewModelFactory.createExistingVM(it.key.elements.first().value as String)
             }
 
             mutableDataList.addAll(viewModelScanneds)
@@ -133,14 +125,7 @@ class ResultActivityViewModel : ViewModel() {
         val position = max(mutableDataList.size - 1, 0)
         mutableDataList.add(
             position,
-            ScannedResultItemViewModel(
-                "",
-                converter,
-                ingredientDatastore,
-                itemNamesDatastore,
-                itemIngredientsDatastore,
-                editable = true
-            )
+            viewModelFactory.createNewVM()
         )
         mutableData.postValue(mutableDataList)
         mutableScrollPosition.postValue(mutableDataList.size - 1)
