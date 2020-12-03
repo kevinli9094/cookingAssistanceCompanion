@@ -42,7 +42,12 @@ abstract class ScannedResultItemViewModel constructor(
         }
     }
 
-    fun done() {
+    fun editIngredient(){
+        ingredientEditableObservable.postValue(true)
+        convertedObservable.postValue(false)
+    }
+
+    fun doneAddNew() {
         val itemText = textObservable.value
         if (itemText == null) {
             // todo: show user some message

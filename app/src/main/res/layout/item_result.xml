@@ -76,12 +76,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:onClick="@{() -> model.done()}"
+                android:onClick="@{() -> model.doneAddNew()}"
                 android:text="Done"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:visibleOrGone="@{model.itemNameEditableObservable}" />
+
+            <Button
+                android:id="@+id/wrongIngredientButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:maxWidth="150dp"
+                android:onClick="@{() -> model.editIngredient()}"
+                android:text="Update ingredient"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:visibleOrGone="@{model.convertedObservable &amp;&amp; !model.itemNameEditableObservable &amp;&amp; !model.ingredientEditableObservable}" />
 
             <Button
                 android:id="@+id/editIngredientButton"

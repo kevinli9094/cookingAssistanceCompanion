@@ -20,7 +20,7 @@ class TAndTScannedResultItemViewModel constructor(
     init {
         init()
     }
-    
+
     override fun insertSingleItem(itemText: String) {
         itemNamesDatastore.insertSingleTAndTItemName(itemText, itemText)
     }
