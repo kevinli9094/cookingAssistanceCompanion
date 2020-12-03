@@ -1,38 +1,40 @@
-package com.kevin.cookingassistancecompanion.utility
+package com.kevin.cookingassistancecompanion.viewmodels.result
 
-import com.kevin.cookingassistancecompanion.ScanningResult
 import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemIngredientMapDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
 import com.kevin.cookingassistancecompanion.models.IngredientMatch
 import com.kevin.cookingassistancecompanion.models.ItemConvertedResult
 
-/**
- * Helper class to convert English Item to ingredient depends on the setting
- */
-class ItemIngredientConverter(
+class TAndTScannedResultItemViewModel constructor(
+    text: String,
     private val ingredientsDatastore: RealmIngredientsDatastore,
     private val itemNamesDatastore: RealmItemNamesDatastore,
-    private val itemIngredientMapDatastore: RealmItemIngredientMapDatastore
+    private val itemIngredientMapDatastore: RealmItemIngredientMapDatastore,
+    editable: Boolean = false
+): ScannedResultItemViewModel(
+    text,
+    editable
 ) {
 
-    fun convert(item: String): ItemConvertedResult {
-        return when (ScanningResult.resultType) {
-            ScanningResult.ResultType.TANDT_CHINESE -> convertTANDTChineseItems(item)
-            ScanningResult.ResultType.TANDT_ENGLISH -> convertTANDTEnglishItems(item)
-        }
+    init {
+        init()
+    }
+    
+    override fun insertSingleItem(itemText: String) {
+        itemNamesDatastore.insertSingleTAndTItemName(itemText, itemText)
     }
 
-    private fun convertTANDTChineseItems(item: String): ItemConvertedResult {
+    override fun insertNewIngredientMapping(itemText: String, ingredient: String) {
+        itemIngredientMapDatastore.insertTAndTMapping(itemText, ingredient)
+        ingredientsDatastore.insertSingleChineseIngredient(ingredient)
+    }
+
+    override fun convert(itemText: String): ItemConvertedResult {
         val map = itemNamesDatastore.getTAndTItemMap()
         val ingredientList = ingredientsDatastore.getChineseIngredients()
         val itemIngredientMap = itemIngredientMapDatastore.getTAndTMapping()
-        return convertTANDTChinese(item, map, ingredientList, itemIngredientMap)
-    }
-
-    private fun convertTANDTEnglishItems(item: String): ItemConvertedResult {
-        // TODO: implement this later
-        return convertTANDTEnglish(item)
+        return convertTANDTChinese(itemText, map, ingredientList, itemIngredientMap)
     }
 
     /**
@@ -67,13 +69,5 @@ class ItemIngredientConverter(
 
         val sortedMatches = mutableList.sortedByDescending { it.score }
         return ItemConvertedResult(itemName, sortedMatches)
-    }
-
-    /**
-     * Takes a correct english T&T item and convert it to English ingredient item
-     */
-    private fun convertTANDTEnglish(itemName: String): ItemConvertedResult {
-        // TODO: implement this
-        return ItemConvertedResult(itemName, null)
     }
 }
