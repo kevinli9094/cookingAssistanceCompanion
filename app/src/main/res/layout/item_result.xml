@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:alpha="@{model.foregroundAlphaObservable}"
-            android:background="@drawable/background_result_item"
+            android:background="@color/result_item_gray"
             android:translationX="@{model.foregroundTranslationXObservable}"
             app:layout_constraintBottom_toBottomOf="@id/container"
             app:layout_constraintTop_toTopOf="@id/container" />
@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="start"
-                app:constraint_referenced_ids="doneButton,doneAddingIngredientButton, editIngredientButton" />
+                app:constraint_referenced_ids="wrongIngredientButton, doneButton,doneAddingIngredientButton, editIngredientButton" />
 
             <EditText
                 android:id="@+id/editText"
@@ -115,9 +115,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:text="@{model.textObservable}"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintBottom_toTopOf="@id/toText"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/editText"
+                app:layout_constraintEnd_toStartOf="@id/buttonStartBarrier"
                 app:visibleOrGone="@{!model.itemNameEditableObservable}"
                 tools:text="temp ingredient" />
 
@@ -146,12 +148,23 @@
                 app:layout_constraintTop_toBottomOf="@id/toText"
                 app:visibleOrGone="@{model.ingredientEditableObservable}" />
 
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginEnd="5dp"
+                app:layout_constraintEnd_toEndOf="@id/text2"
+                app:layout_constraintTop_toTopOf="@id/text2"
+                app:layout_constraintBottom_toBottomOf="@id/text2"
+                android:src="@drawable/ic_spinner_bg"
+                app:visibleOrGone="@{model.convertedObservable}"/>
+
             <Spinner
                 android:id="@+id/text2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 app:entries="@{model.spinnerEntriesObservable}"
+                android:paddingEnd="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/buttonStartBarrier"
                 app:layout_constraintHorizontal_bias="0"

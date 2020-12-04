@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/background_result_item"
+        android:background="@color/result_item_gray"
         android:onClick="@{() -> model.addEditableItem()}"
         >
 
