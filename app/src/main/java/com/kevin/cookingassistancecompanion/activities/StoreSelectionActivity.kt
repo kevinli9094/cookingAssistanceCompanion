@@ -1,11 +1,14 @@
 package com.kevin.cookingassistancecompanion.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
+import com.kevin.cookingassistancecompanion.data.SharePreferenceDatastore
 import com.kevin.cookingassistancecompanion.databinding.ActivitySelectStoreBinding
+import com.kevin.cookingassistancecompanion.viewmodels.ViewModelFactory
 import com.kevin.cookingassistancecompanion.viewmodels.storeselection.StoreSelectionViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -23,10 +26,20 @@ class StoreSelectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivitySelectStoreBinding.inflate(layoutInflater)
-        val model = StoreSelectionViewModel.getViewModel(this)
+        val model = ViewModelFactory(this).create(StoreSelectionViewModel::class.java)
         binding.model = model
         setContentView(binding.root)
         loadAssetToDatabase()
+        detectSetup()
+    }
+
+    private fun detectSetup() {
+        val setup = SharePreferenceDatastore(this).isSetup()
+
+        if (!setup) {
+            val intent = Intent(this, SetupActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     /**

@@ -29,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:onClick="@{() -> model.save()}"
             android:text="Save"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/scanButton"
@@ -39,19 +40,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Scan"
-            app:layout_constraintBottom_toBottomOf="@id/saveButton"
-            app:layout_constraintEnd_toStartOf="@id/exitButton"
-            app:layout_constraintStart_toEndOf="@id/saveButton"
-            app:layout_constraintTop_toTopOf="@id/saveButton" />
-
-        <Button
-            android:id="@+id/exitButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Exit"
+            android:onClick="@{() -> model.scan()}"
             app:layout_constraintBottom_toBottomOf="@id/saveButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/scanButton"
+            app:layout_constraintStart_toEndOf="@id/saveButton"
             app:layout_constraintTop_toTopOf="@id/saveButton" />
 
         <View

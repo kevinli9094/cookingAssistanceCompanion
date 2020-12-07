@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.kevin.cookingassistancecompanion.viewmodels.setup.SetupActivityViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/ipHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IP address"
+            app:layout_constraintBottom_toTopOf="@id/ipEditText"
+            app:layout_constraintStart_toStartOf="@id/ipEditText"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <EditText
+            android:id="@+id/ipEditText"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:hint="192.168.xxx.xxx:xxx"
+            android:text="@={model.ipAddressObservable}"
+            app:layout_constraintBottom_toTopOf="@id/userHint"
+            app:layout_constraintEnd_toStartOf="@id/ipConfirmButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ipHint" />
+
+        <Button
+            android:id="@+id/ipConfirmButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> model.confirmIpAddress()}"
+            android:text="Confirm"
+            app:layout_constraintBottom_toBottomOf="@id/ipEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ipEditText"
+            app:layout_constraintTop_toTopOf="@id/ipEditText" />
+
+        <TextView
+            android:id="@+id/userHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="Select User"
+            app:layout_constraintBottom_toTopOf="@id/spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ipEditText"
+            app:visibleOrGone="@{model.showSpinner}" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:entries="@{model.spinnerEntries}"
+            app:layout_constraintBottom_toTopOf="@id/doneButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/userHint"
+            app:selectedValue="@={model.selectedUser}"
+            app:visibleOrGone="@{model.showSpinner}" />
+
+        <Button
+            android:id="@+id/doneButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:onClick="@{() -> model.done()}"
+            android:text="Done"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spinner"
+            app:visibleOrGone="@{model.showSpinner}" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/loading_background"
+            app:visibleOrGone="@{model.isLoading}" />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visibleOrGone="@{model.isLoading}" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
