@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import com.kevin.cookingassistancecompanion.activities.StoreSelectionActivity
 
+/**
+ * Coordinator for setup screen
+ */
 class SetupCoordinator(private val activity: Activity) {
     fun openStoreSelectionActivity() {
         val intent = Intent(activity, StoreSelectionActivity::class.java)

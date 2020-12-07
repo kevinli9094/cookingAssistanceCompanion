@@ -9,6 +9,9 @@ import com.google.mlkit.vision.text.TextRecognizerOptions
 import com.kevin.cookingassistancecompanion.textAnalyzer.BaseTextAnalyzer
 import com.kevin.cookingassistancecompanion.textAnalyzer.ImageBaseInfo
 
+/**
+ * ImageAnalyzer that takes the result from Mlkit and pass it to [textAnalyzer] and [CameraOverlay]
+ */
 class ImageAnalyzer constructor(
     private val textAnalyzer: BaseTextAnalyzer
 ) : ImageAnalysis.Analyzer {

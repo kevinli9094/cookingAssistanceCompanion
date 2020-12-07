@@ -4,6 +4,9 @@ import android.content.Context
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
+/**
+ * initialize realm. All the config of realm goes to here.
+ */
 class RealmInit {
     fun init(context: Context) {
         Realm.init(context)

@@ -6,6 +6,9 @@ import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
 import com.kevin.cookingassistancecompanion.models.IngredientMatch
 import com.kevin.cookingassistancecompanion.models.ItemConvertedResult
 
+/**
+ * ScannedResultItemViewModel that target T&T items
+ */
 class TAndTScannedResultItemViewModel constructor(
     text: String,
     private val ingredientsDatastore: RealmIngredientsDatastore,

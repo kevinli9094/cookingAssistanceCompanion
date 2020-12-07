@@ -6,6 +6,9 @@ import com.kevin.cookingassistancecompanion.models.DrawInfo
 
 data class ImageBaseInfo(val width: Int, val height: Int, val rotationDegree: Int)
 
+/**
+ * Base class for text analyzer to make sure all text analyzer also updates [CameraOverlay]
+ */
 abstract class BaseTextAnalyzer(private val overlay: CameraOverlay) {
 
     abstract fun processText(visionText: Text, imageInfo: ImageBaseInfo)

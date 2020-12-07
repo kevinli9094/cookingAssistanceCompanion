@@ -8,9 +8,14 @@ import com.kevin.cookingassistancecompanion.databinding.ActivitySetupBinding
 import com.kevin.cookingassistancecompanion.viewmodels.ViewModelFactory
 import com.kevin.cookingassistancecompanion.viewmodels.setup.SetupActivityViewModel
 
-
+/**
+ * Activity for the setup page
+ */
 class SetupActivity : AppCompatActivity() {
 
+    /**
+     * this method is being used in [SetupActivityViewModel] to hide soft keyboard
+     */
     private val hideKeyboard: () -> Unit = {
         val imm: InputMethodManager =
             getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager

@@ -1,5 +1,8 @@
 package com.kevin.cookingassistancecompanion
 
+/**
+ * Global object to store user setting and scanning result
+ */
 object ScanningResult {
     enum class ResultType(val str: String) {
         TANDT_CHINESE("T&T Chinese"),

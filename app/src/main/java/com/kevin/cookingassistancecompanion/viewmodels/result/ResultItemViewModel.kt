@@ -6,6 +6,10 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
+/**
+ * Base class for ResultItemViewModels. Also implements [LifecycleOwner] since this view model will
+ * be created and managed in view model instead of activity
+ */
 abstract class ResultItemViewModel(
     text: String,
     val itemType: Int

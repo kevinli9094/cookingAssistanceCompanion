@@ -17,7 +17,9 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 
-
+/**
+ * Activity for store selection screen
+ */
 class StoreSelectionActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "StoreSelectionActivity"
@@ -33,6 +35,9 @@ class StoreSelectionActivity : AppCompatActivity() {
         detectSetup()
     }
 
+    /**
+     * Open setup page if user has not setup the ip address and user
+     */
     private fun detectSetup() {
         val setup = SharePreferenceDatastore(this).isSetup()
 
@@ -43,7 +48,8 @@ class StoreSelectionActivity : AppCompatActivity() {
     }
 
     /**
-     * Use this to load asset file to database
+     * Use this to load asset file to database.
+     * Should do nothing if database is not empty
      */
     private fun loadAssetToDatabase() {
         loadChineseIngredient()
