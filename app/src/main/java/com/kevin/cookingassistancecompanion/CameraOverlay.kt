@@ -9,6 +9,9 @@ import android.util.Log
 import android.view.View
 import com.kevin.cookingassistancecompanion.models.DrawInfo
 
+/**
+ * Custom view on top of the camera preview to indicate which part of the image is being detected
+ */
 class CameraOverlay @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

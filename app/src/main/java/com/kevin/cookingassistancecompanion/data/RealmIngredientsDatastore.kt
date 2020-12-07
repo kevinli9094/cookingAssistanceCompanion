@@ -3,6 +3,9 @@ package com.kevin.cookingassistancecompanion.data
 import com.kevin.cookingassistancecompanion.data.models.ChineseIngredientRealmModel
 import io.realm.kotlin.where
 
+/**
+ * Datastore to get ingredients
+ */
 class RealmIngredientsDatastore {
     private val realmConnection = RealmConnection()
 

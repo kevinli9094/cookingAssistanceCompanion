@@ -11,7 +11,9 @@ import com.kevin.cookingassistancecompanion.viewmodels.result.ResultItemViewMode
 import com.kevin.cookingassistancecompanion.viewmodels.result.ResultItemViewModel.Companion.ITEM_TYPE_RESULT
 import com.kevin.cookingassistancecompanion.viewmodels.result.ScannedResultItemViewModel
 
-
+/**
+ * Adapter for the recycler view in Result activity
+ */
 class ResultAdapter(
     private val activityViewModel: ResultActivityViewModel
 ) : DiffUtilAdapter<ResultItemViewModel>() {

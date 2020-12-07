@@ -7,6 +7,9 @@ import com.kevin.cookingassistancecompanion.CameraOverlay
 import com.kevin.cookingassistancecompanion.ScanningResult
 import com.kevin.cookingassistancecompanion.models.DrawInfo
 
+/**
+ * TextAnalyzer for T&T item
+ */
 class TAndTTextAnalyzer(overlay: CameraOverlay): BaseTextAnalyzer(overlay) {
 
     companion object {

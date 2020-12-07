@@ -5,6 +5,9 @@ import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemIngredientMapDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
 
+/**
+ * Factory class to create ResultItemViewModel class base of setting
+ */
 class ScannedResultItemVMFactory(
     private val ingredientsDatastore: RealmIngredientsDatastore,
     private val itemNamesDatastore: RealmItemNamesDatastore,

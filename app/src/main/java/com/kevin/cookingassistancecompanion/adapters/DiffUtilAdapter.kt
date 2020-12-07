@@ -13,6 +13,9 @@ import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+/**
+ * Abstract adapter that uses [DiffUtil] to privide better performance and animation
+ */
 abstract class DiffUtilAdapter<T> : RecyclerView.Adapter<ViewHolder>() {
 
     companion object{

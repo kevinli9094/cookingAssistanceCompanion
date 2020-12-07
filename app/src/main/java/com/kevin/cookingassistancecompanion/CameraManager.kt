@@ -20,6 +20,9 @@ import com.kevin.cookingassistancecompanion.utility.afterMeasured
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
+/**
+ * Class that handles the setup of the camera, including which analyzer to user and auto focus
+ */
 class CameraManager(
     private val activity: AppCompatActivity,
     private val cameraView: PreviewView,
@@ -35,8 +38,6 @@ class CameraManager(
 
     fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(activity)
-
-
 
         cameraProviderFuture.addListener({
             // Used to bind the lifecycle of cameras to the lifecycle owner

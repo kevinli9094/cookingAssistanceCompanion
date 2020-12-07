@@ -29,6 +29,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.math.max
 
+/**
+ * Viewmodel for the overall Result screen
+ */
 class ResultActivityViewModel(
     private val coordinator: ResultActivityCoordinator,
     private val sharePreferenceDatastore: SharePreferenceDatastore
@@ -65,6 +68,9 @@ class ResultActivityViewModel(
         }
     }
 
+    /**
+     * Takes output from MlKit and fuzzy match with all the correct term
+     */
     private suspend fun processData() {
         val outputResult = ScanningResult.getSortedResult()
         val documentList: List<Document> =
@@ -84,6 +90,7 @@ class ResultActivityViewModel(
                     .createDocument()
             }
 
+        // todo: the following should be updated to grab the correct list
         val correctItemList = RealmItemNamesDatastore().getTAndTItemPairList()
         val existingDoc = correctItemList.mapIndexed { index, value ->
             Builder(index.toString())
@@ -135,6 +142,9 @@ class ResultActivityViewModel(
         mutableData.postValue(mutableDataList)
     }
 
+    /**
+     * Add editable item at the end
+     */
     fun addEditableItem() {
         val position = max(mutableDataList.size - 1, 0)
         mutableDataList.add(
@@ -199,6 +209,9 @@ class ResultActivityViewModel(
         }
     }
 
+    /**
+     * Scan again
+     */
     fun scan() {
         coordinator.openSelectStoreActivity()
     }

@@ -22,7 +22,9 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 
-
+/**
+ * Activity for the scan page
+ */
 @ExperimentalCoroutinesApi
 class ScanActivity : AppCompatActivity() {
 
@@ -57,6 +59,9 @@ class ScanActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * start camera once permission is granted
+     */
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults:
         IntArray

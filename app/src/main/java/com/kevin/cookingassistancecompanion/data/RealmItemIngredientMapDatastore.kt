@@ -3,6 +3,9 @@ package com.kevin.cookingassistancecompanion.data
 import com.kevin.cookingassistancecompanion.data.models.TAndTItemIngredientRealmModel
 import io.realm.kotlin.where
 
+/**
+ * Datastore for direct mapping between english item to ingredient
+ */
 class RealmItemIngredientMapDatastore {
     private val realmConnection = RealmConnection()
 

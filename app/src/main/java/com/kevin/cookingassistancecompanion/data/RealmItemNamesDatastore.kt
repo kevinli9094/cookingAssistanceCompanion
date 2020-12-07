@@ -4,6 +4,9 @@ import com.kevin.cookingassistancecompanion.data.models.TAndTItemNameRealmModel
 import com.kevin.cookingassistancecompanion.models.TAndTItemPair
 import io.realm.kotlin.where
 
+/**
+ * Datastore to store item name
+ */
 class RealmItemNamesDatastore {
 
     private val realmConnection = RealmConnection()

@@ -12,6 +12,9 @@ import com.kevin.cookingassistancecompanion.viewmodels.setup.SetupActivityViewMo
 import com.kevin.cookingassistancecompanion.viewmodels.storeselection.StoreSelectionViewModel
 import java.lang.IllegalStateException
 
+/**
+ * Custom view model factory class to help activity create view models
+ */
 class ViewModelFactory (private val activity: Activity) : ViewModelProvider.NewInstanceFactory(){
 
     @Suppress("UNCHECKED_CAST")

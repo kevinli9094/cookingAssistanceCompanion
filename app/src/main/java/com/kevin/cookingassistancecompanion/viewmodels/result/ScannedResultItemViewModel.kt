@@ -8,6 +8,9 @@ import com.kevin.cookingassistancecompanion.models.ItemConvertedResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * Abstract class for ScannedResutlItemViewModels
+ */
 abstract class ScannedResultItemViewModel constructor(
     text: String,
     editable: Boolean = false

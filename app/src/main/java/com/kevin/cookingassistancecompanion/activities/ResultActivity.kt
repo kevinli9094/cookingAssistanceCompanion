@@ -21,6 +21,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+/**
+ * Activity for the result page
+ */
 @ExperimentalCoroutinesApi
 class ResultActivity : AppCompatActivity() {
     companion object {

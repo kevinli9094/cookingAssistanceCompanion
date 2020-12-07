@@ -2,6 +2,9 @@ package com.kevin.cookingassistancecompanion.data
 
 import android.content.Context
 
+/**
+ * Datastore for user setting(eg: ip address and selected user)
+ */
 class SharePreferenceDatastore(private val context: Context) {
     companion object {
         private const val SHARE_PREFERENCE_NAME = "CookingAssistanceSharepreference"

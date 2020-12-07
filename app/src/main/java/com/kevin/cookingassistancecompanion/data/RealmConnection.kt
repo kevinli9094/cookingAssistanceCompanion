@@ -3,6 +3,9 @@ package com.kevin.cookingassistancecompanion.data
 import android.util.Log
 import io.realm.Realm
 
+/**
+ * Wrapper for realm to ensure the Closable realm is always realm
+ */
 class RealmConnection {
 
     companion object {
