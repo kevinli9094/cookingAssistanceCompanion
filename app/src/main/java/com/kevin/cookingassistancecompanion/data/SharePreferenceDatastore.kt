@@ -6,7 +6,7 @@ class SharePreferenceDatastore(private val context: Context) {
     companion object {
         private const val SHARE_PREFERENCE_NAME = "CookingAssistanceSharepreference"
         private const val KEY_SETUP = "KEY_SETUP"
-        private const val KEY_IP_ADDRESS = "KEY_IP_ADDRESS"
+        private const val KEY_URL = "KEY_IP_ADDRESS"
         private const val KEY_USER_ID = "KEY_USER_ID"
     }
 
@@ -25,12 +25,12 @@ class SharePreferenceDatastore(private val context: Context) {
 
     fun updateUrl(url: String){
         val editor = sharePreference.edit()
-        editor.putString(KEY_IP_ADDRESS, url)
+        editor.putString(KEY_URL, url)
         editor.apply()
     }
 
-    fun getIPAddress(): String{
-        return sharePreference.getString(KEY_IP_ADDRESS, "")!!
+    fun getUrl(): String{
+        return sharePreference.getString(KEY_URL, "")!!
     }
 
     fun updateSelectedUser(userId: String){

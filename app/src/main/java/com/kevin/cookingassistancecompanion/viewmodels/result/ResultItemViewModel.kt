@@ -18,6 +18,7 @@ abstract class ResultItemViewModel(
     }
 
     val textObservable = MutableLiveData(text)
+    val convertedTextObservable = MutableLiveData("")
     private val lifecycleRegistry = LifecycleRegistry(this)
 
     init {

@@ -15,7 +15,6 @@ abstract class ScannedResultItemViewModel constructor(
 
     val itemNameEditableObservable = MutableLiveData(editable)
     val ingredientEditableObservable = MutableLiveData(editable)
-    val convertedTextObservable = MutableLiveData("")
     val spinnerEntriesObservable = MutableLiveData<List<String>>()
     val convertedObservable = MutableLiveData(false)
     val foregroundAlphaObservable = MutableLiveData(1f)
