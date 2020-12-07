@@ -1,4 +1,4 @@
-package com.kevin.cookingassistancecompanion.models
+package com.kevin.cookingassistancecompanion.models.gson
 
 import com.google.gson.annotations.SerializedName
 

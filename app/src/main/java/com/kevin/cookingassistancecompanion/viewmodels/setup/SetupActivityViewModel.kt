@@ -7,7 +7,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.kevin.cookingassistancecompanion.coordinators.SetupCoordinator
 import com.kevin.cookingassistancecompanion.data.SharePreferenceDatastore
-import com.kevin.cookingassistancecompanion.models.User
+import com.kevin.cookingassistancecompanion.models.gson.User
 import com.kevin.cookingassistancecompanion.services.CookingAssistanceService
 import retrofit2.Call
 import retrofit2.Callback

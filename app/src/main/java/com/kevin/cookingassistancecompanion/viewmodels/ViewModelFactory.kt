@@ -21,7 +21,10 @@ class ViewModelFactory (private val activity: Activity) : ViewModelProvider.NewI
                 StoreSelectionViewModel(StoreSelectionCoordinator((activity)))
             }
             ResultActivityViewModel::class.java -> {
-                ResultActivityViewModel(ResultActivityCoordinator(activity))
+                ResultActivityViewModel(
+                    ResultActivityCoordinator(activity),
+                    SharePreferenceDatastore(activity)
+                )
             }
             SetupActivityViewModel::class.java -> {
                 SetupActivityViewModel(

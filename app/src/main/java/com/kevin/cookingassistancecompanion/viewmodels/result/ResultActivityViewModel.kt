@@ -15,13 +15,23 @@ import com.kevin.cookingassistancecompanion.coordinators.ResultActivityCoordinat
 import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemIngredientMapDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
+import com.kevin.cookingassistancecompanion.data.SharePreferenceDatastore
+import com.kevin.cookingassistancecompanion.models.gson.UpdateIngredientBody
+import com.kevin.cookingassistancecompanion.services.CookingAssistanceService
+import com.kevin.cookingassistancecompanion.viewmodels.result.ResultItemViewModel.Companion.ITEM_TYPE_RESULT
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.math.max
 
 class ResultActivityViewModel(
-    private val coordinator: ResultActivityCoordinator
+    private val coordinator: ResultActivityCoordinator,
+    private val sharePreferenceDatastore: SharePreferenceDatastore
 ) : ViewModel() {
     companion object {
         const val TAG = "ResultActivityViewModel"
@@ -103,6 +113,7 @@ class ResultActivityViewModel(
             mutableDataList.add(ButtonResultItemViewModel("Add"))
             mutableData.postValue(mutableDataList)
             mutableIsLoading.postValue(false)
+            ScanningResult.setResult(emptyList())
         }
     }
 
@@ -138,7 +149,54 @@ class ResultActivityViewModel(
      * Save the data to the cloud
      */
     fun save() {
-        ScanningResult.setResult(mutableDataList.map { it.textObservable.value!! })
+        val ingredients: List<String> = mutableDataList
+            .filter { it.itemType == ITEM_TYPE_RESULT }
+            .mapNotNull {
+                val convertedResult = it.convertedTextObservable.value
+                return@mapNotNull if (convertedResult != null && convertedResult.isNotBlank()) {
+                    convertedResult
+                } else {
+                    it.textObservable.value
+                }
+            }
+
+        if (ingredients.isEmpty()) {
+            // todo: show message
+            return
+        }
+
+        val url = sharePreferenceDatastore.getUrl()
+        val userId = sharePreferenceDatastore.getSelectedUserId()
+        if (url.isNotBlank() && userId.isNotBlank()) {
+            val retrofit = Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            val service = retrofit.create(CookingAssistanceService::class.java)
+
+            mutableIsLoading.postValue(true)
+            service.updateIngredient(
+                UpdateIngredientBody(
+                    userId,
+                    ingredients
+                )
+            ).enqueue(object : Callback<Void> {
+                override fun onResponse(
+                    call: Call<Void>,
+                    response: Response<Void>
+                ) {
+                    // todo: display successful message
+                    mutableIsLoading.postValue(false)
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    // todo: show error message
+                    mutableIsLoading.postValue(false)
+                }
+            })
+        } else {
+            // todo: show warning message
+        }
     }
 
     fun scan() {
