@@ -11,6 +11,7 @@ import com.intuit.fuzzymatcher.domain.Element
 import com.intuit.fuzzymatcher.domain.ElementType
 import com.intuit.fuzzymatcher.domain.MatchType
 import com.kevin.cookingassistancecompanion.ScanningResult
+import com.kevin.cookingassistancecompanion.coordinators.ResultActivityCoordinator
 import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemIngredientMapDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
@@ -19,7 +20,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.max
 
-class ResultActivityViewModel : ViewModel() {
+class ResultActivityViewModel(
+    private val coordinator: ResultActivityCoordinator
+) : ViewModel() {
     companion object {
         const val TAG = "ResultActivityViewModel"
     }
@@ -131,8 +134,15 @@ class ResultActivityViewModel : ViewModel() {
         mutableScrollPosition.postValue(mutableDataList.size - 1)
     }
 
+    /**
+     * Save the data to the cloud
+     */
     fun save() {
         ScanningResult.setResult(mutableDataList.map { it.textObservable.value!! })
+    }
+
+    fun scan() {
+        coordinator.openSelectStoreActivity()
     }
 
     override fun onCleared() {

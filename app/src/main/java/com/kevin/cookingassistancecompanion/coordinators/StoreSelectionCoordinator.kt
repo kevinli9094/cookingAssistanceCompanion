@@ -1,4 +1,4 @@
-package com.kevin.cookingassistancecompanion
+package com.kevin.cookingassistancecompanion.coordinators
 
 import android.app.Activity
 import android.content.Intent

@@ -15,6 +15,7 @@ import com.kevin.cookingassistancecompanion.adapters.ResultAdapter
 import com.kevin.cookingassistancecompanion.adapters.ViewHolder
 import com.kevin.cookingassistancecompanion.databinding.ActivityResultBinding
 import com.kevin.cookingassistancecompanion.databinding.ItemResultBinding
+import com.kevin.cookingassistancecompanion.viewmodels.ViewModelFactory
 import com.kevin.cookingassistancecompanion.viewmodels.result.ResultActivityViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -32,7 +33,7 @@ class ResultActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         setContentView(binding.root)
 
-        val viewModel = ViewModelProvider(this).get(ResultActivityViewModel::class.java)
+        val viewModel = ViewModelFactory(this).create(ResultActivityViewModel::class.java)
         binding.model = viewModel
         setupRecyclerView(binding, viewModel)
     }
