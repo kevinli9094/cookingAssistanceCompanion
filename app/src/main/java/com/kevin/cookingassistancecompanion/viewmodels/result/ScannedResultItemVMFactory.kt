@@ -1,6 +1,7 @@
 package com.kevin.cookingassistancecompanion.viewmodels.result
 
 import com.kevin.cookingassistancecompanion.ScanningResult
+import com.kevin.cookingassistancecompanion.activities.MessageManager
 import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemIngredientMapDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
@@ -9,6 +10,7 @@ import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
  * Factory class to create ResultItemViewModel class base of setting
  */
 class ScannedResultItemVMFactory(
+    private val messageManager: MessageManager,
     private val ingredientsDatastore: RealmIngredientsDatastore,
     private val itemNamesDatastore: RealmItemNamesDatastore,
     private val itemIngredientMapDatastore: RealmItemIngredientMapDatastore
@@ -18,6 +20,7 @@ class ScannedResultItemVMFactory(
         return when (ScanningResult.resultType) {
             ScanningResult.ResultType.TANDT_CHINESE -> TAndTScannedResultItemViewModel(
                 text,
+                messageManager,
                 ingredientsDatastore,
                 itemNamesDatastore,
                 itemIngredientMapDatastore,
@@ -33,6 +36,7 @@ class ScannedResultItemVMFactory(
         return when (ScanningResult.resultType) {
             ScanningResult.ResultType.TANDT_CHINESE -> TAndTScannedResultItemViewModel(
                 "",
+                messageManager,
                 ingredientsDatastore,
                 itemNamesDatastore,
                 itemIngredientMapDatastore,

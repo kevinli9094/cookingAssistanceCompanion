@@ -1,5 +1,6 @@
 package com.kevin.cookingassistancecompanion.viewmodels.result
 
+import com.kevin.cookingassistancecompanion.activities.MessageManager
 import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemIngredientMapDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
@@ -11,13 +12,15 @@ import com.kevin.cookingassistancecompanion.models.ItemConvertedResult
  */
 class TAndTScannedResultItemViewModel constructor(
     text: String,
+    messageManager: MessageManager,
     private val ingredientsDatastore: RealmIngredientsDatastore,
     private val itemNamesDatastore: RealmItemNamesDatastore,
     private val itemIngredientMapDatastore: RealmItemIngredientMapDatastore,
     editable: Boolean = false
 ): ScannedResultItemViewModel(
     text,
-    editable
+    editable,
+    messageManager
 ) {
 
     init {

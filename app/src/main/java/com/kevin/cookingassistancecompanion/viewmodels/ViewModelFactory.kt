@@ -3,6 +3,7 @@ package com.kevin.cookingassistancecompanion.viewmodels
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.kevin.cookingassistancecompanion.activities.MessageManager
 import com.kevin.cookingassistancecompanion.coordinators.ResultActivityCoordinator
 import com.kevin.cookingassistancecompanion.coordinators.SetupCoordinator
 import com.kevin.cookingassistancecompanion.coordinators.StoreSelectionCoordinator
@@ -26,13 +27,15 @@ class ViewModelFactory (private val activity: Activity) : ViewModelProvider.NewI
             ResultActivityViewModel::class.java -> {
                 ResultActivityViewModel(
                     ResultActivityCoordinator(activity),
-                    SharePreferenceDatastore(activity)
+                    SharePreferenceDatastore(activity),
+                    MessageManager(activity)
                 )
             }
             SetupActivityViewModel::class.java -> {
                 SetupActivityViewModel(
                     SetupCoordinator(activity),
-                    SharePreferenceDatastore(activity)
+                    SharePreferenceDatastore(activity),
+                    MessageManager(activity)
                 )
             }
             else -> {throw IllegalStateException("unrecognized view model")}

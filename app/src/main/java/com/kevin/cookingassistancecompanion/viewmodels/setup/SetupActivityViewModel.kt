@@ -1,10 +1,10 @@
 package com.kevin.cookingassistancecompanion.viewmodels.setup
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.kevin.cookingassistancecompanion.activities.MessageManager
 import com.kevin.cookingassistancecompanion.coordinators.SetupCoordinator
 import com.kevin.cookingassistancecompanion.data.SharePreferenceDatastore
 import com.kevin.cookingassistancecompanion.models.gson.User
@@ -20,7 +20,8 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 class SetupActivityViewModel(
     private val coordinator: SetupCoordinator,
-    private val datastore: SharePreferenceDatastore
+    private val datastore: SharePreferenceDatastore,
+    private val messageManager: MessageManager
 ) : ViewModel() {
     companion object {
         private const val TAG = "SetupActivityViewModel"
@@ -62,22 +63,20 @@ class SetupActivityViewModel(
                         spinnerEntries.postValue(entries.map { it.name })
                         selectedUser.postValue(entries.map { it.name }.first())
                     } else if (entries != null) {
-                        // entries is empty. todo: show message
+                        messageManager.showToast("There is existing user. Please create a user first")
                     } else {
-                        // todo: show error message
+                        messageManager.showToast("There is existing user. Please create a user first")
                     }
                     isLoading.postValue(false)
                 }
 
                 override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                    // todo: show error message
-                    Log.i(TAG, "onFailure")
+                    messageManager.showToast("Fail to fetch users")
                     isLoading.postValue(false)
                 }
             })
         } else {
-            Log.i(TAG, "ip is null")
-            // todo: show error message
+            messageManager.showToast("Please provide a valid ip address")
         }
     }
 
@@ -89,8 +88,7 @@ class SetupActivityViewModel(
             datastore.setup()
             coordinator.openStoreSelectionActivity()
         } else {
-            Log.w(TAG, "there is no selected user.")
-            // todo: add error message
+            messageManager.showToast("Please select a user")
         }
 
     }
