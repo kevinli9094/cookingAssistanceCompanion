@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.kevin.cookingassistancecompanion.activities.MessageManager
+import com.kevin.cookingassistancecompanion.utility.MessageManager
 import com.kevin.cookingassistancecompanion.coordinators.SetupCoordinator
 import com.kevin.cookingassistancecompanion.data.SharePreferenceDatastore
 import com.kevin.cookingassistancecompanion.models.gson.User

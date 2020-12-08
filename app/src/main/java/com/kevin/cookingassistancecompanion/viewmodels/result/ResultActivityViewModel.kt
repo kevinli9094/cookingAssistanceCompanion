@@ -11,7 +11,7 @@ import com.intuit.fuzzymatcher.domain.Element
 import com.intuit.fuzzymatcher.domain.ElementType
 import com.intuit.fuzzymatcher.domain.MatchType
 import com.kevin.cookingassistancecompanion.ScanningResult
-import com.kevin.cookingassistancecompanion.activities.MessageManager
+import com.kevin.cookingassistancecompanion.utility.MessageManager
 import com.kevin.cookingassistancecompanion.coordinators.ResultActivityCoordinator
 import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemIngredientMapDatastore

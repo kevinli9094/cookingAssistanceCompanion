@@ -1,8 +1,11 @@
-package com.kevin.cookingassistancecompanion.activities
+package com.kevin.cookingassistancecompanion.utility
 
 import android.content.Context
 import android.widget.Toast
 
+/**
+ * Class to show message to user
+ */
 class MessageManager(
     private val context: Context
 ) {

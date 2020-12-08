@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.lifecycleScope
-import com.kevin.cookingassistancecompanion.activities.MessageManager
+import com.kevin.cookingassistancecompanion.utility.MessageManager
 import com.kevin.cookingassistancecompanion.models.ItemConvertedResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

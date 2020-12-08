@@ -3,7 +3,7 @@ package com.kevin.cookingassistancecompanion.viewmodels
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.kevin.cookingassistancecompanion.activities.MessageManager
+import com.kevin.cookingassistancecompanion.utility.MessageManager
 import com.kevin.cookingassistancecompanion.coordinators.ResultActivityCoordinator
 import com.kevin.cookingassistancecompanion.coordinators.SetupCoordinator
 import com.kevin.cookingassistancecompanion.coordinators.StoreSelectionCoordinator

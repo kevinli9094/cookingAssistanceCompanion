@@ -1,6 +1,6 @@
 package com.kevin.cookingassistancecompanion.viewmodels.result
 
-import com.kevin.cookingassistancecompanion.activities.MessageManager
+import com.kevin.cookingassistancecompanion.utility.MessageManager
 import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemIngredientMapDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemNamesDatastore
