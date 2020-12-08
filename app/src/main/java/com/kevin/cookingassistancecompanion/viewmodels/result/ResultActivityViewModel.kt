@@ -11,6 +11,7 @@ import com.intuit.fuzzymatcher.domain.Element
 import com.intuit.fuzzymatcher.domain.ElementType
 import com.intuit.fuzzymatcher.domain.MatchType
 import com.kevin.cookingassistancecompanion.ScanningResult
+import com.kevin.cookingassistancecompanion.utility.MessageManager
 import com.kevin.cookingassistancecompanion.coordinators.ResultActivityCoordinator
 import com.kevin.cookingassistancecompanion.data.RealmIngredientsDatastore
 import com.kevin.cookingassistancecompanion.data.RealmItemIngredientMapDatastore
@@ -34,7 +35,8 @@ import kotlin.math.max
  */
 class ResultActivityViewModel(
     private val coordinator: ResultActivityCoordinator,
-    private val sharePreferenceDatastore: SharePreferenceDatastore
+    private val sharePreferenceDatastore: SharePreferenceDatastore,
+    private val messageManager: MessageManager
 ) : ViewModel() {
     companion object {
         const val TAG = "ResultActivityViewModel"
@@ -57,6 +59,7 @@ class ResultActivityViewModel(
     private val itemIngredientsDatastore = RealmItemIngredientMapDatastore()
 
     private val viewModelFactory = ScannedResultItemVMFactory(
+        messageManager,
         ingredientDatastore,
         itemNamesDatastore,
         itemIngredientsDatastore
@@ -171,7 +174,7 @@ class ResultActivityViewModel(
             }
 
         if (ingredients.isEmpty()) {
-            // todo: show message
+            messageManager.showToast("There is no ingredients")
             return
         }
 
@@ -195,17 +198,17 @@ class ResultActivityViewModel(
                     call: Call<Void>,
                     response: Response<Void>
                 ) {
-                    // todo: display successful message
+                    messageManager.showToast("Saved to server")
                     mutableIsLoading.postValue(false)
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    // todo: show error message
+                    messageManager.showToast("Something went wrong. Please try again.")
                     mutableIsLoading.postValue(false)
                 }
             })
         } else {
-            // todo: show warning message
+            messageManager.showToast("Url and user is not setup")
         }
     }
 

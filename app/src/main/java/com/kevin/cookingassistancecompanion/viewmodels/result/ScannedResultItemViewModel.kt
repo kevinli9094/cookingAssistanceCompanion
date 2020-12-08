@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.lifecycleScope
+import com.kevin.cookingassistancecompanion.utility.MessageManager
 import com.kevin.cookingassistancecompanion.models.ItemConvertedResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
  */
 abstract class ScannedResultItemViewModel constructor(
     text: String,
-    editable: Boolean = false
+    editable: Boolean = false,
+    private val messageManager: MessageManager
 ) : ResultItemViewModel(text = text, itemType = ITEM_TYPE_RESULT) {
 
     val itemNameEditableObservable = MutableLiveData(editable)
@@ -51,8 +53,8 @@ abstract class ScannedResultItemViewModel constructor(
 
     fun doneAddNew() {
         val itemText = textObservable.value
-        if (itemText == null) {
-            // todo: show user some message
+        if (itemText == null || itemText.isBlank()) {
+            messageManager.showToast("Please fill up the item")
             return
         }
         itemNameEditableObservable.postValue(false)
@@ -81,7 +83,7 @@ abstract class ScannedResultItemViewModel constructor(
                 convertedObservable.postValue(true)
             }
         } else {
-            // todo: show user some message
+            messageManager.showToast("Please make sure both item name and ingredient name is filled")
             Log.w(TAG, "ingredient field is missing while trying to add new ingredient")
         }
     }
